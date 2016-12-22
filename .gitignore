@@ -1,0 +1,12 @@
+# Dependency directory
+# node_modules
+*.exe
+
+
+# Source maps
+*.js.map
+
+# Files marked with gitigx
+*gitigx*
+
+.idea

@@ -1,1 +1,187 @@
-whenshouldileavefortheairport
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDEcpUttkMU0xkVmwbKrRC1XLA-3yj84es&libraries=places"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/node_modules/moment/min/moment.min.js"></script>
+    <script src="/node_modules/jquery-typeahead/dist/jquery.typeahead.min.js" type="text/javascript"></script>
+    <script src="/node_modules/typeahead.js/dist/typeahead.bundle.min.js" type="text/javascript"></script>
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/node_modules/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+    <link href="/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+    <link rel="stylesheet" href="/node_modules/jquery-typeahead/dist/jquery.typeahead.min.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>When should I leave for the airport?</title>
+    <meta name="description" content="When should I leave for the airport?">
+
+    <style>html{background-color: #F0F0F0;}</style>
+
+    <link rel="stylesheet" href="/styles/app.css">
+
+    <!-- Start Single Page Apps for GitHub Pages -->
+    <script type="text/javascript">
+
+      /////////////////////////////////////////////////////////////////////////
+      // Single Page Apps for GitHub Pages
+      // https://github.com/rafrex/spa-github-pages
+      // Copyright (c) 2016 Rafael Pedicini, licensed under the MIT License
+      // ----------------------------------------------------------------------
+      // This script checks to see if a redirect is present in the query string
+      // and converts it back into the correct url and adds it to the
+      // browser's history using window.history.replaceState(...),
+      // which won't cause the browser to attempt to load the new url.
+      // When the single page app is loaded further down in this file,
+      // the correct url will be waiting in the browser's history for
+      // the single page app to route accordingly.
+      /////////////////////////////////////////////////////////////////////////
+
+      (function(l) {
+        if (l.search) {
+          var q = {};
+          l.search.slice(1).split('&').forEach(function(v) {
+            var a = v.split('=');
+            q[a[0]] = a.slice(1).join('=').replace(/~and~/g, '&');
+          });
+          if (q.p !== undefined) {
+            window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + (q.p || '') +
+              (q.q ? ('?' + q.q) : '') +
+              l.hash
+            );
+          }
+        }
+      }(window.location))
+
+
+
+
+    </script>
+    <!-- End Single Page Apps for GitHub Pages -->
+
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- single page app in bundle.js -->
+    <script src="/__build__/bundle.js"></script>
+    <script>
+        function displayError() {
+            $('#result').html("Uh oh, there was an error. Please reload the page and try again.");
+        }
+
+        function displayResult(timeToArrive, duration, durationText){
+            //let leaveTime = startTime - duration;
+            let resultText = "You should arrive at the airport by <span class='highlight'>" + new Date(timeToArrive).toTimeString() + "</span><br/>";
+            resultText += "Duration of travel in milliseconds is <span class='highlight'>" + duration + "</span><br/>";
+            resultText += "Duration of travel in english is <span class='highlight'>" + durationText + "</span><br/>";
+            //let flightTimeObj = new Date(flightTime);
+            let timeToLeave = new Date(timeToArrive - duration);
+            resultText += "You should leave by <span class='highlight'>" + timeToLeave + "</span><br/>";
+            let msUntil = timeToLeave - Date.now();
+            let minUntil = msUntil / 60000;
+            resultText += "You have <span class='highlight'>" + minUntil + "</span> minutes to leave<br/>";
+
+
+            console.dir(resultText);
+            $('#result').html(resultText);
+        }
+
+        function calculateDistances(timeToArrive, estimatedDeparture, transitMode, flightType, round, startLocation, airport) {
+            let service = new google.maps.DistanceMatrixService();
+            let travelMode = transitMode == "transit" ? google.maps.TravelMode.TRANSIT : google.maps.TravelMode.DRIVING;
+
+            let departureTime = (estimatedDeparture < Date.now()) ? (Date.now() + 10000) : estimatedDeparture;
+
+            let baseConfig = {
+                origins: [startLocation], //array of origins
+                destinations: [airport], //array of destinations
+                travelMode: travelMode,
+                unitSystem: google.maps.UnitSystem.IMPERIAL,
+                avoidHighways: false,
+                avoidTolls: false,
+                transitOptions: {
+                    arrivalTime: new Date(timeToArrive)
+                },
+                drivingOptions: {
+                    departureTime: new Date(departureTime),
+                    trafficModel: 'pessimistic'
+                }
+            };
+            service.getDistanceMatrix(baseConfig, function(response, status){callback(timeToArrive, estimatedDeparture, transitMode, flightType, round, response, status, startLocation, airport)});
+        }
+
+        function callback(timeToArrive, estimatedDeparture, transitMode, flightType, round, response, status, startLocation, airport) {
+
+            if (status == google.maps.DistanceMatrixStatus.OK) {
+                let isDriving = (transitMode + '' == "driving");
+                let durationObj = isDriving ? response.rows[0].elements[0].duration_in_traffic : response.rows[0].elements[0].duration;
+                let duration = durationObj.value * 1000;
+                let durationText = durationObj.text;
+                console.log(response);
+                console.log(durationText);
+                console.log(new Date(estimatedDeparture + duration));
+                console.log(round);
+                if (round < 3 && isDriving) {
+                    calculateDistances(timeToArrive, timeToArrive - duration, transitMode, flightType, round + 1, startLocation, airport)
+                } else {
+                    displayResult(timeToArrive, duration, durationText)
+                }
+            } else {
+                console.log(status);
+                displayError()
+            }
+            }
+
+        let handleSubmit = function (e) {
+                let airport = document.getElementById("airportInput").value;
+                let startLocation = document.getElementById("startInput").value;
+                let flightTime = document.getElementById("dateval").value;
+                let transitMode = $('input[name="options2"]:checked').val();
+                let flightType = $('input[name="options"]:checked').val();
+                console.dir(airport);
+                console.dir(startLocation);
+                console.dir(flightTime);
+                console.dir(transitMode);
+
+                let flightTimeObj = new Date(flightTime);
+                let airportTimeModifier = flightType == "domestic" ? 1000 * 60 * 60 * 2 : 1000 * 60 * 60 * 3;
+                let timeToArrive = flightTimeObj - airportTimeModifier;
+
+                calculateDistances(timeToArrive, timeToArrive, transitMode, flightType, 1, startLocation, airport);
+        };
+
+        let form = $('.airport-form');
+        form.on('submit', function(e){
+            e.preventDefault();
+            try{
+                handleSubmit(e);
+            } catch(e) {
+                console.log("exception caught");
+                console.log(e);
+                displayError();
+            }
+        });
+
+        function initialize() {
+
+            let input = document.getElementById('startInput');
+            let autocomplete = new google.maps.places.Autocomplete(input);
+        }
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            $('#datetimepicker12').datetimepicker({
+                inline: true,
+                sideBySide: true,
+                minDate: "now"
+            }).on('dp.change', function(e) {
+                $('#dateval').val(e.date);
+            });
+            $('#dateval').val(new Date());
+        });
+    </script>
+  </body>
+</html>
