@@ -122,7 +122,7 @@
                 console.log(durationText);
                 console.log(new Date(estimatedDeparture + duration));
                 console.log(round);
-                if (round < 3 && isDriving) {
+                if (round < 2 && isDriving) {
                     calculateDistances(timeToArrive, timeToArrive - duration, transitMode, flightType, round + 1, startLocation, airport)
                 } else {
                     displayResult(timeToArrive, duration, durationText)
