@@ -87,7 +87,7 @@ function Home() {
     }
 
     const airports = getAirports();
-    const airportsStrings = airports.map(function(e){ return e.name + ", " + e.city + ", " + abbrState(e.state, "name") + " (" + e.shortcode + ")"});
+    const airportsStrings = airports.map(function(e){ return e.shortcode + " - " + e.name + ", " + e.city + ", " + abbrState(e.state, "name")});
 
 
 
@@ -153,7 +153,7 @@ function Home() {
                 </div>
                 <span className="label">To Airport</span>
                 <div className="form-group textola">
-                    <input id="airportInput" type="text" name="a" onClick={(e)=>{e.target.select()}} className="form-control typeahead" placeholder="Airport Name or Code" autoComplete="off" defaultValue={"Newark International, Newark, New Jersey"}></input>
+                    <input id="airportInput" type="text" name="a" onClick={(e)=>{e.target.select()}} className="form-control typeahead" placeholder="Airport Name or Code" autoComplete="off" defaultValue={"EWR - Newark International, Newark, New Jersey"}></input>
                 </div>
                 <span className="label">Travel By</span>
                 <span className="label floatright">Arrive How Early</span>

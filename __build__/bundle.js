@@ -28743,7 +28743,7 @@
 	
 	    var airports = getAirports();
 	    var airportsStrings = airports.map(function (e) {
-	        return e.name + ", " + e.city + ", " + abbrState(e.state, "name") + " (" + e.shortcode + ")";
+	        return e.shortcode + " - " + e.name + ", " + e.city + ", " + abbrState(e.state, "name");
 	    });
 	
 	    $(document).ready(function () {
@@ -28823,7 +28823,7 @@
 	                    { className: 'form-group textola' },
 	                    _react2.default.createElement('input', { id: 'airportInput', type: 'text', name: 'a', onClick: function onClick(e) {
 	                            e.target.select();
-	                        }, className: 'form-control typeahead', placeholder: 'Airport Name or Code', autoComplete: 'off', defaultValue: "Newark International, Newark, New Jersey" })
+	                        }, className: 'form-control typeahead', placeholder: 'Airport Name or Code', autoComplete: 'off', defaultValue: "EWR - Newark International, Newark, New Jersey" })
 	                ),
 	                _react2.default.createElement(
 	                    'span',
