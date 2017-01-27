@@ -135,22 +135,31 @@ function Home() {
         };
     };
 
+
+    //TODO airport picker into select?
+    //TODO make date time a dropdown
+    //TODO location onClick="this.select();"
+    //TODO bootstrapify autcomplete maps location
+    //TODO duratoin picker out of datetimepicker?
+
+
   return (
     <div>
         <div>
             <form className="airport-form">
+                <span className="label">Leaving From</span>
+                <div className="form-group textola">
+                    <input id="startInput" type="text" onClick={(e)=>{e.target.select()}} name="s" placeholder="Location or Address" className="form-control" defaultValue={"New York, NY, United States"}></input>
+                </div>
                 <span className="label">To Airport</span>
                 <div className="form-group textola">
-                    <input id="airportInput" type="text" name="a" className="form-control typeahead" placeholder="Airport Name or Code" autoComplete="off"></input>
+                    <input id="airportInput" type="text" name="a" onClick={(e)=>{e.target.select()}} className="form-control typeahead" placeholder="Airport Name or Code" autoComplete="off" defaultValue={"Newark International, Newark, New Jersey"}></input>
                 </div>
-                <span className="label">From Location</span>
-                <div className="form-group textola">
-                    <input id="startInput" type="text" name="s" placeholder="Location or Address" className="form-control"></input>
-                </div>
-                <span className="label">Driving Mode</span>
-                <span className="label" style={{float: "right"}}>Destination Type</span>
-                <div className="form-group">
-                    <div id="radio1" className="floatleft">
+                <span className="label">Travel By</span>
+                <span className="label floatright">Arrive How Early</span>
+                <div className="form-group"  style={{margin:"0"}}></div>
+                <div>
+                    <div id="radio1" className="floatleft" >
                         <div id="travelMode"  className="btn-group" data-toggle="buttons">
                             <label className="btn btn-default active">
                                 <input type="radio" name="options2" id="option1" autoComplete="off" defaultChecked value="driving"></input>
@@ -162,27 +171,35 @@ function Home() {
                             </label>
                         </div>
                     </div>
-                    <div id="radio2" className="floatright">
-                        <div id="flightType"  className="btn-group" data-toggle="buttons">
-                            <label className="btn btn-default active">
-                                <input type="radio" name="options" id="option1" autoComplete="off" defaultChecked value="domestic"></input>
-                                Domestic
-                            </label>
-                            <label className="btn btn-default">
-                                <input type="radio" name="options" id="option2" autoComplete="off" value="international"></input>
-                                International
-                            </label>
+                    <div style={{width:"170px", float: "right", marginRight:"5%"}}>
+                        <div className="input-group hr"  style={{maxWidth:"1px", float: "left"}}>
+                            <select className="form-control selectpicker" id="hr">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                            </select>
+                            <span className="input-group-addon" id="basic-addon2">hr</span>
+                        </div>
+                        <div className="input-group min" style={{maxWidth:"1px", float: "right"}}>
+                            <select defaultValue={30} className="form-control selectpicker" id="min">
+                                <option>0</option>
+                                <option>15</option>
+                                <option >30</option>
+                                <option>45</option>
+                            </select>
+                            <span className="input-group-addon" id="basic-addon2">min</span>
                         </div>
                     </div>
                 </div>
-                <div className="form-group"></div>
+                <div className="form-group"  style={{padding:"0"}}></div>
                 <span className="label">Flight Time</span>
                 <div className="form-group">
                     <div id="datetimepicker12"></div>
                     <input id="dateval" hidden></input>
                 </div>
                 <div className="submit">
-                    <button type="submit" className="btn btn-default" >When should I leave for the airport?</button>
+                    <button type="submit" className="btn btn-default" >Go</button>
                 </div>
             </form>
         </div>

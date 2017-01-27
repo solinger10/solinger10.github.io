@@ -28664,6 +28664,15 @@
 	  return _react2.default.createElement(
 	    'div',
 	    null,
+	    _react2.default.createElement(
+	      'header',
+	      null,
+	      _react2.default.createElement(
+	        'h1',
+	        null,
+	        'When should I leave for the airport?'
+	      )
+	    ),
 	    children,
 	    _react2.default.createElement(
 	      'div',
@@ -28776,6 +28785,13 @@
 	        };
 	    };
 	
+	    //TODO airport picker into select?
+	    //TODO make date time a dropdown
+	    //TODO location onClick="this.select();"
+	    //TODO bootstrapify autcomplete maps location
+	    //TODO duratoin picker out of datetimepicker?
+	
+	
 	    return _react2.default.createElement(
 	        'div',
 	        null,
@@ -28788,36 +28804,41 @@
 	                _react2.default.createElement(
 	                    'span',
 	                    { className: 'label' },
+	                    'Leaving From'
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'form-group textola' },
+	                    _react2.default.createElement('input', { id: 'startInput', type: 'text', onClick: function onClick(e) {
+	                            e.target.select();
+	                        }, name: 's', placeholder: 'Location or Address', className: 'form-control', defaultValue: "New York, NY, United States" })
+	                ),
+	                _react2.default.createElement(
+	                    'span',
+	                    { className: 'label' },
 	                    'To Airport'
 	                ),
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'form-group textola' },
-	                    _react2.default.createElement('input', { id: 'airportInput', type: 'text', name: 'a', className: 'form-control typeahead', placeholder: 'Airport Name or Code', autoComplete: 'off' })
+	                    _react2.default.createElement('input', { id: 'airportInput', type: 'text', name: 'a', onClick: function onClick(e) {
+	                            e.target.select();
+	                        }, className: 'form-control typeahead', placeholder: 'Airport Name or Code', autoComplete: 'off', defaultValue: "Newark International, Newark, New Jersey" })
 	                ),
 	                _react2.default.createElement(
 	                    'span',
 	                    { className: 'label' },
-	                    'From Location'
-	                ),
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'form-group textola' },
-	                    _react2.default.createElement('input', { id: 'startInput', type: 'text', name: 's', placeholder: 'Location or Address', className: 'form-control' })
+	                    'Travel By'
 	                ),
 	                _react2.default.createElement(
 	                    'span',
-	                    { className: 'label' },
-	                    'Driving Mode'
+	                    { className: 'label floatright' },
+	                    'Arrive How Early'
 	                ),
-	                _react2.default.createElement(
-	                    'span',
-	                    { className: 'label', style: { float: "right" } },
-	                    'Destination Type'
-	                ),
+	                _react2.default.createElement('div', { className: 'form-group', style: { margin: "0" } }),
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'form-group' },
+	                    null,
 	                    _react2.default.createElement(
 	                        'div',
 	                        { id: 'radio1', className: 'floatleft' },
@@ -28840,26 +28861,76 @@
 	                    ),
 	                    _react2.default.createElement(
 	                        'div',
-	                        { id: 'radio2', className: 'floatright' },
+	                        { style: { width: "170px", float: "right", marginRight: "5%" } },
 	                        _react2.default.createElement(
 	                            'div',
-	                            { id: 'flightType', className: 'btn-group', 'data-toggle': 'buttons' },
+	                            { className: 'input-group hr', style: { maxWidth: "1px", float: "left" } },
 	                            _react2.default.createElement(
-	                                'label',
-	                                { className: 'btn btn-default active' },
-	                                _react2.default.createElement('input', { type: 'radio', name: 'options', id: 'option1', autoComplete: 'off', defaultChecked: true, value: 'domestic' }),
-	                                'Domestic'
+	                                'select',
+	                                { className: 'form-control selectpicker', id: 'hr' },
+	                                _react2.default.createElement(
+	                                    'option',
+	                                    null,
+	                                    '1'
+	                                ),
+	                                _react2.default.createElement(
+	                                    'option',
+	                                    null,
+	                                    '2'
+	                                ),
+	                                _react2.default.createElement(
+	                                    'option',
+	                                    null,
+	                                    '3'
+	                                ),
+	                                _react2.default.createElement(
+	                                    'option',
+	                                    null,
+	                                    '4'
+	                                )
 	                            ),
 	                            _react2.default.createElement(
-	                                'label',
-	                                { className: 'btn btn-default' },
-	                                _react2.default.createElement('input', { type: 'radio', name: 'options', id: 'option2', autoComplete: 'off', value: 'international' }),
-	                                'International'
+	                                'span',
+	                                { className: 'input-group-addon', id: 'basic-addon2' },
+	                                'hr'
+	                            )
+	                        ),
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'input-group min', style: { maxWidth: "1px", float: "right" } },
+	                            _react2.default.createElement(
+	                                'select',
+	                                { defaultValue: 30, className: 'form-control selectpicker', id: 'min' },
+	                                _react2.default.createElement(
+	                                    'option',
+	                                    null,
+	                                    '0'
+	                                ),
+	                                _react2.default.createElement(
+	                                    'option',
+	                                    null,
+	                                    '15'
+	                                ),
+	                                _react2.default.createElement(
+	                                    'option',
+	                                    null,
+	                                    '30'
+	                                ),
+	                                _react2.default.createElement(
+	                                    'option',
+	                                    null,
+	                                    '45'
+	                                )
+	                            ),
+	                            _react2.default.createElement(
+	                                'span',
+	                                { className: 'input-group-addon', id: 'basic-addon2' },
+	                                'min'
 	                            )
 	                        )
 	                    )
 	                ),
-	                _react2.default.createElement('div', { className: 'form-group' }),
+	                _react2.default.createElement('div', { className: 'form-group', style: { padding: "0" } }),
 	                _react2.default.createElement(
 	                    'span',
 	                    { className: 'label' },
@@ -28877,7 +28948,7 @@
 	                    _react2.default.createElement(
 	                        'button',
 	                        { type: 'submit', className: 'btn btn-default' },
-	                        'When should I leave for the airport?'
+	                        'Go'
 	                    )
 	                )
 	            )
