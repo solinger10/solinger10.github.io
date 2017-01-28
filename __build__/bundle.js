@@ -28803,6 +28803,7 @@
 	            resultText += "You should leave by<span class='highlight'> " + timeToLeave + " </span>" + dayText + "<br/>";
 	            var msUntil = timeToLeave - Date.now();
 	            var minUntil = msUntil / 60000;
+	            //resultText += "It's going to take " + minUntil + " minutes of travel time<br/>";
 	            if (minUntil < 0) {
 	                resultText += "<span class='small'>You should probably hurry</span><br/>";
 	            }
