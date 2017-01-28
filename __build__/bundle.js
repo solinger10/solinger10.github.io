@@ -28746,25 +28746,6 @@
 	        return e.shortcode + " - " + e.name + ", " + e.city + ", " + abbrState(e.state, "name");
 	    });
 	
-	    $(document).ready(function () {
-	        $('.typeahead').typeahead({
-	            hint: true,
-	            highlight: true,
-	            minLength: 1
-	        }, {
-	            name: 'airports',
-	            source: substringMatcher(airportsStrings),
-	            templates: {
-	                empty: ['<div class="list-group search-results-dropdown"><div class="list-group-item">Nothing found.</div></div>'],
-	                header: ['<div class="list-group search-results-dropdown">'],
-	                suggestion: function suggestion(data) {
-	                    return '<div class="list-group search-results-dropdown"><div class="list-group-item">' + data + '</div></div>';
-	                }
-	            }
-	        });
-	        //$("#travelMode :input").change();
-	    });
-	
 	    var substringMatcher = function substringMatcher(strs) {
 	        return function findMatches(q, cb) {
 	            // an array that will be populated with substring matches
@@ -28785,6 +28766,154 @@
 	        };
 	    };
 	
+	    $(document).ready(function () {
+	        $('.typeahead').typeahead({
+	            hint: true,
+	            highlight: true,
+	            minLength: 1
+	        }, {
+	            name: 'airports',
+	            source: substringMatcher(airportsStrings),
+	            templates: {
+	                empty: ['<div class="list-group search-results-dropdown"><div class="list-group-item">Nothing found.</div></div>'],
+	                header: ['<div class="list-group search-results-dropdown">'],
+	                suggestion: function suggestion(data) {
+	                    return '<div class="list-group search-results-dropdown"><div class="list-group-item">' + data + '</div></div>';
+	                }
+	            }
+	        });
+	        //$("#travelMode :input").change();
+	
+	
+	        function displayError() {
+	            $('#result').html("Uh oh, there was an error. Please reload the page and try again.");
+	        }
+	
+	        function displayResult(timeToArrive, duration, durationText) {
+	            //let leaveTime = startTime - duration;
+	            var resultText = "You should arrive at the airport by <span class='highlight'>" + new Date(timeToArrive).toTimeString() + "</span><br/>";
+	            resultText += "Duration of travel in milliseconds is <span class='highlight'>" + duration + "</span><br/>";
+	            resultText += "Duration of travel in english is <span class='highlight'>" + durationText + "</span><br/>";
+	            //let flightTimeObj = new Date(flightTime);
+	            var timeToLeave = new Date(timeToArrive - duration);
+	            resultText += "You should leave by <span class='highlight'>" + timeToLeave + "</span><br/>";
+	            var msUntil = timeToLeave - Date.now();
+	            var minUntil = msUntil / 60000;
+	            resultText += "You have <span class='highlight'>" + minUntil + "</span> minutes to leave<br/>";
+	
+	            console.dir(resultText);
+	            $('#result').html(resultText);
+	        }
+	
+	        function calculateDistances(timeToArrive, estimatedDeparture, transitMode, round, startLocation, airport) {
+	            var service = new google.maps.DistanceMatrixService();
+	            var travelMode = transitMode == "transit" ? google.maps.TravelMode.TRANSIT : google.maps.TravelMode.DRIVING;
+	
+	            var departureTime = estimatedDeparture < Date.now() ? Date.now() + 10000 : estimatedDeparture;
+	
+	            var config = {
+	                origins: [startLocation], //array of origins
+	                destinations: [airport], //array of destinations
+	                travelMode: travelMode,
+	                unitSystem: google.maps.UnitSystem.IMPERIAL,
+	                avoidHighways: false,
+	                avoidTolls: false,
+	                transitOptions: {
+	                    arrivalTime: new Date(timeToArrive)
+	                },
+	                drivingOptions: {
+	                    departureTime: new Date(departureTime),
+	                    trafficModel: 'pessimistic'
+	                }
+	            };
+	            console.dir(config);
+	            service.getDistanceMatrix(config, function (response, status) {
+	                callback(timeToArrive, estimatedDeparture, transitMode, round, response, status, startLocation, airport);
+	            });
+	        }
+	
+	        function callback(timeToArrive, estimatedDeparture, transitMode, round, response, status, startLocation, airport) {
+	
+	            if (status == google.maps.DistanceMatrixStatus.OK) {
+	                console.log(response);
+	                var isDriving = transitMode + '' == "driving";
+	                var durationObj = isDriving ? response.rows[0].elements[0].duration_in_traffic : response.rows[0].elements[0].duration;
+	                var duration = durationObj.value * 1000;
+	                var durationText = durationObj.text;
+	                console.log(response);
+	                console.log(durationText);
+	                console.log(new Date(estimatedDeparture + duration));
+	                console.log(round);
+	                if (round < 2 && isDriving) {
+	                    calculateDistances(timeToArrive, timeToArrive - duration, transitMode, round + 1, startLocation, airport);
+	                } else {
+	                    displayResult(timeToArrive, duration, durationText);
+	                }
+	            } else {
+	                console.log(status);
+	                displayError();
+	            }
+	        }
+	
+	        var handleSubmit = function handleSubmit(e) {
+	            var airport = document.getElementById("airportInput").value;
+	            var startLocation = document.getElementById("startInput").value;
+	            var flightTime = document.getElementById("dateval").value;
+	            var transitMode = $('input[name="options2"]:checked').val();
+	            var hour = document.getElementById("hr").value;
+	            var minute = document.getElementById("min").value;
+	            var airportTimeModifier = hour * 60 + parseInt(minute);
+	            console.dir(airport);
+	            console.dir(startLocation);
+	            console.dir(flightTime);
+	            console.dir(transitMode);
+	            console.dir(airportTimeModifier);
+	
+	            var flightTimeObj = new Date(flightTime);
+	            var timeToArrive = flightTimeObj - airportTimeModifier * 60000;
+	
+	            calculateDistances(timeToArrive, timeToArrive, transitMode, 1, startLocation, airport);
+	        };
+	
+	        var form = $('.airport-form');
+	        form.on('submit', function (e) {
+	            e.preventDefault();
+	            try {
+	                handleSubmit(e);
+	            } catch (e) {
+	                console.log("exception caught");
+	                console.log(e);
+	                displayError();
+	            }
+	        });
+	
+	        function initialize() {
+	
+	            var input = document.getElementById('startInput');
+	            var autocomplete = new google.maps.places.Autocomplete(input);
+	        }
+	
+	        google.maps.event.addDomListener(window, 'load', initialize);
+	
+	        $(function () {
+	            var now = new Date();
+	            var tomorrow = new Date(now.valueOf());
+	            tomorrow.setDate(tomorrow.getDate() + 1);
+	            var dateStr = dateFormat(tomorrow, "isoDate") + " 18:30";
+	            console.dir(tomorrow);
+	            console.dir(dateStr);
+	            $('#datetimepicker12').datetimepicker({
+	                inline: true,
+	                sideBySide: true,
+	                minDate: "now",
+	                defaultDate: dateStr,
+	                stepping: 5
+	            }).on('dp.change', function (e) {
+	                $('#dateval').val(e.date);
+	            });
+	            $('#dateval').val(new Date());
+	        });
+	    });
 	    //TODO airport picker into select?
 	    //TODO make date time a dropdown
 	    //TODO location onClick="this.select();"

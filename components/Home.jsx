@@ -90,6 +90,27 @@ function Home() {
     const airportsStrings = airports.map(function(e){ return e.shortcode + " - " + e.name + ", " + e.city + ", " + abbrState(e.state, "name")});
 
 
+    let substringMatcher = function(strs) {
+        return function findMatches(q, cb) {
+            // an array that will be populated with substring matches
+            let matches = [];
+
+            // regex used to determine if a string contains the substring `q`
+            let substrRegex = new RegExp(q, 'i');
+
+            // iterate through the pool of strings and for any string that
+            // contains the substring `q`, add it to the `matches` array
+            $.each(strs, function(i, str) {
+                if (substrRegex.test(str)) {
+                    matches.push(str);
+                }
+            });
+
+            cb(matches);
+        };
+    };
+
+
 
     $(document).ready(function() {
         $('.typeahead').typeahead({
@@ -113,29 +134,149 @@ function Home() {
                 }
             });
         //$("#travelMode :input").change();
-    });
 
-    let substringMatcher = function(strs) {
-        return function findMatches(q, cb) {
-            // an array that will be populated with substring matches
-            let matches = [];
 
-            // regex used to determine if a string contains the substring `q`
-            let substrRegex = new RegExp(q, 'i');
 
-            // iterate through the pool of strings and for any string that
-            // contains the substring `q`, add it to the `matches` array
-            $.each(strs, function(i, str) {
-                if (substrRegex.test(str)) {
-                    matches.push(str);
+
+
+
+
+
+
+
+        function displayError() {
+            $('#result').html("Uh oh, there was an error. Please reload the page and try again.");
+        }
+
+        function displayResult(timeToArrive, duration, durationText){
+            //let leaveTime = startTime - duration;
+            let resultText = "You should arrive at the airport by <span class='highlight'>" + new Date(timeToArrive).toTimeString() + "</span><br/>";
+            resultText += "Duration of travel in milliseconds is <span class='highlight'>" + duration + "</span><br/>";
+            resultText += "Duration of travel in english is <span class='highlight'>" + durationText + "</span><br/>";
+            //let flightTimeObj = new Date(flightTime);
+            let timeToLeave = new Date(timeToArrive - duration);
+            resultText += "You should leave by <span class='highlight'>" + timeToLeave + "</span><br/>";
+            let msUntil = timeToLeave - Date.now();
+            let minUntil = msUntil / 60000;
+            resultText += "You have <span class='highlight'>" + minUntil + "</span> minutes to leave<br/>";
+
+
+            console.dir(resultText);
+            $('#result').html(resultText);
+        }
+
+        function calculateDistances(timeToArrive, estimatedDeparture, transitMode, round, startLocation, airport) {
+            let service = new google.maps.DistanceMatrixService();
+            let travelMode = transitMode == "transit" ? google.maps.TravelMode.TRANSIT : google.maps.TravelMode.DRIVING;
+
+            let departureTime = (estimatedDeparture < Date.now()) ? (Date.now() + 10000) : estimatedDeparture;
+
+            let config = {
+                origins: [startLocation], //array of origins
+                destinations: [airport], //array of destinations
+                travelMode: travelMode,
+                unitSystem: google.maps.UnitSystem.IMPERIAL,
+                avoidHighways: false,
+                avoidTolls: false,
+                transitOptions: {
+                    arrivalTime: new Date(timeToArrive)
+                },
+                drivingOptions: {
+                    departureTime: new Date(departureTime),
+                    trafficModel: 'pessimistic'
                 }
-            });
+            };
+            console.dir(config);
+            service.getDistanceMatrix(config, function(response, status){callback(timeToArrive, estimatedDeparture, transitMode, round, response, status, startLocation, airport)});
+        }
 
-            cb(matches);
+        function callback(timeToArrive, estimatedDeparture, transitMode, round, response, status, startLocation, airport) {
+
+            if (status == google.maps.DistanceMatrixStatus.OK) {
+                console.log(response);
+                let isDriving = (transitMode + '' == "driving");
+                let durationObj = isDriving ? response.rows[0].elements[0].duration_in_traffic : response.rows[0].elements[0].duration;
+                let duration = durationObj.value * 1000;
+                let durationText = durationObj.text;
+                console.log(response);
+                console.log(durationText);
+                console.log(new Date(estimatedDeparture + duration));
+                console.log(round);
+                if (round < 2 && isDriving) {
+                    calculateDistances(timeToArrive, timeToArrive - duration, transitMode, round + 1, startLocation, airport)
+                } else {
+                    displayResult(timeToArrive, duration, durationText)
+                }
+            } else {
+                console.log(status);
+                displayError()
+            }
+        }
+
+        let handleSubmit = function (e) {
+            let airport = document.getElementById("airportInput").value;
+            let startLocation = document.getElementById("startInput").value;
+            let flightTime = document.getElementById("dateval").value;
+            let transitMode = $('input[name="options2"]:checked').val();
+            let hour = document.getElementById("hr").value;
+            let minute = document.getElementById("min").value;
+            let airportTimeModifier = hour * 60 + parseInt(minute);
+            console.dir(airport);
+            console.dir(startLocation);
+            console.dir(flightTime);
+            console.dir(transitMode);
+            console.dir(airportTimeModifier);
+
+            let flightTimeObj = new Date(flightTime);
+            let timeToArrive = flightTimeObj - airportTimeModifier * 60000;
+
+            calculateDistances(timeToArrive, timeToArrive, transitMode, 1, startLocation, airport);
         };
-    };
+
+        let form = $('.airport-form');
+        form.on('submit', function(e){
+            e.preventDefault();
+            try{
+                handleSubmit(e);
+            } catch(e) {
+                console.log("exception caught");
+                console.log(e);
+                displayError();
+            }
+        });
+
+        function initialize() {
+
+            let input = document.getElementById('startInput');
+            let autocomplete = new google.maps.places.Autocomplete(input);
+        }
+
+        google.maps.event.addDomListener(window, 'load', initialize);
 
 
+
+
+
+
+        $(function () {
+            let now = new Date();
+            let tomorrow = new Date(now.valueOf());
+            tomorrow.setDate(tomorrow.getDate()+1);
+            const dateStr = dateFormat(tomorrow, "isoDate") + " 18:30";
+            console.dir(tomorrow);
+            console.dir(dateStr);
+            $('#datetimepicker12').datetimepicker({
+                inline: true,
+                sideBySide: true,
+                minDate: "now",
+                defaultDate: dateStr,
+                stepping: 5
+            }).on('dp.change', function(e) {
+                $('#dateval').val(e.date);
+            });
+            $('#dateval').val(new Date());
+        });
+    });
     //TODO airport picker into select?
     //TODO make date time a dropdown
     //TODO location onClick="this.select();"

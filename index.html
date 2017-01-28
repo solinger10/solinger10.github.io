@@ -23,12 +23,14 @@
 
     <link rel="stylesheet" href="/styles/app.css">
     <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
           m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-      ga('create', 'UA-90756908-1', 'auto');
-      ga('send', 'pageview');
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-91024448-1', 'auto');
+        ga('send', 'pageview');
+    </script>
     </script>
     <script type="text/javascript">
       (function(l) {
@@ -46,158 +48,12 @@
             );
           }
         }
-      }(window.location))
-
-
-      //let dateFormat = require('dateformat');
-
+      }(window.location));
     </script>
 
   </head>
   <body>
     <div id="root"></div>
-    <!-- single page app in bundle.js -->
     <script src="/__build__/bundle.js"></script>
-    <script>
-        function displayError() {
-            $('#result').html("Uh oh, there was an error. Please reload the page and try again.");
-        }
-
-        function displayResult(timeToArrive, duration, durationText){
-            //let leaveTime = startTime - duration;
-            let resultText = "You should arrive at the airport by <span class='highlight'>" + new Date(timeToArrive).toTimeString() + "</span><br/>";
-            resultText += "Duration of travel in milliseconds is <span class='highlight'>" + duration + "</span><br/>";
-            resultText += "Duration of travel in english is <span class='highlight'>" + durationText + "</span><br/>";
-            //let flightTimeObj = new Date(flightTime);
-            let timeToLeave = new Date(timeToArrive - duration);
-            resultText += "You should leave by <span class='highlight'>" + timeToLeave + "</span><br/>";
-            let msUntil = timeToLeave - Date.now();
-            let minUntil = msUntil / 60000;
-            resultText += "You have <span class='highlight'>" + minUntil + "</span> minutes to leave<br/>";
-
-
-            console.dir(resultText);
-            $('#result').html(resultText);
-        }
-
-        function calculateDistances(timeToArrive, estimatedDeparture, transitMode, round, startLocation, airport) {
-            let service = new google.maps.DistanceMatrixService();
-            let travelMode = transitMode == "transit" ? google.maps.TravelMode.TRANSIT : google.maps.TravelMode.DRIVING;
-
-            let departureTime = (estimatedDeparture < Date.now()) ? (Date.now() + 10000) : estimatedDeparture;
-
-            let config = {
-                origins: [startLocation], //array of origins
-                destinations: [airport], //array of destinations
-                travelMode: travelMode,
-                unitSystem: google.maps.UnitSystem.IMPERIAL,
-                avoidHighways: false,
-                avoidTolls: false,
-                transitOptions: {
-                    arrivalTime: new Date(timeToArrive)
-                },
-                drivingOptions: {
-                    departureTime: new Date(departureTime),
-                    trafficModel: 'pessimistic'
-                }
-            };
-            console.dir(config);
-            service.getDistanceMatrix(config, function(response, status){callback(timeToArrive, estimatedDeparture, transitMode, round, response, status, startLocation, airport)});
-        }
-
-        function callback(timeToArrive, estimatedDeparture, transitMode, round, response, status, startLocation, airport) {
-
-            if (status == google.maps.DistanceMatrixStatus.OK) {
-                console.log(response);
-                let isDriving = (transitMode + '' == "driving");
-                let durationObj = isDriving ? response.rows[0].elements[0].duration_in_traffic : response.rows[0].elements[0].duration;
-                let duration = durationObj.value * 1000;
-                let durationText = durationObj.text;
-                console.log(response);
-                console.log(durationText);
-                console.log(new Date(estimatedDeparture + duration));
-                console.log(round);
-                if (round < 2 && isDriving) {
-                    calculateDistances(timeToArrive, timeToArrive - duration, transitMode, round + 1, startLocation, airport)
-                } else {
-                    displayResult(timeToArrive, duration, durationText)
-                }
-            } else {
-                console.log(status);
-                displayError()
-            }
-            }
-
-        let handleSubmit = function (e) {
-                let airport = document.getElementById("airportInput").value;
-                let startLocation = document.getElementById("startInput").value;
-                let flightTime = document.getElementById("dateval").value;
-                let transitMode = $('input[name="options2"]:checked').val();
-                let hour = document.getElementById("hr").value;
-                let minute = document.getElementById("min").value;
-                let airportTimeModifier = hour * 60 + parseInt(minute);
-                console.dir(airport);
-                console.dir(startLocation);
-                console.dir(flightTime);
-                console.dir(transitMode);
-                console.dir(airportTimeModifier);
-
-                let flightTimeObj = new Date(flightTime);
-                let timeToArrive = flightTimeObj - airportTimeModifier * 60000;
-
-                calculateDistances(timeToArrive, timeToArrive, transitMode, 1, startLocation, airport);
-        };
-
-        let form = $('.airport-form');
-        form.on('submit', function(e){
-            e.preventDefault();
-            try{
-                handleSubmit(e);
-            } catch(e) {
-                console.log("exception caught");
-                console.log(e);
-                displayError();
-            }
-        });
-
-        function initialize() {
-
-            let input = document.getElementById('startInput');
-            let autocomplete = new google.maps.places.Autocomplete(input);
-        }
-
-        google.maps.event.addDomListener(window, 'load', initialize);
-    </script>
-    <script type="text/javascript">
-
-        $(function () {
-            let now = new Date();
-            let tomorrow = new Date(now.valueOf());
-            tomorrow.setDate(tomorrow.getDate()+1);
-            const dateStr = dateFormat(tomorrow, "isoDate") + " 18:30";
-            console.dir(tomorrow);
-            console.dir(dateStr);
-            $('#datetimepicker12').datetimepicker({
-                inline: true,
-                sideBySide: true,
-                minDate: "now",
-                defaultDate: dateStr,
-                stepping: 5
-            }).on('dp.change', function(e) {
-                $('#dateval').val(e.date);
-            });
-            $('#dateval').val(new Date());
-        });
-/*
-        $(function () {
-            $('#datetimepicker10').datetimepicker({
-                viewMode: 'days',
-                format: 'MM/DD/YYYY HH:mm',
-                minDate: "now"
-            });
-        });*/
-        //$('.selectpicker').selectpicker({template:{}});
-    </script>
-
   </body>
 </html>
