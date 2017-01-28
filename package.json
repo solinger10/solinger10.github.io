@@ -16,6 +16,7 @@
     "bootstrap": "^3.3.7",
     "bootstrap-select": "^1.12.1",
     "current-input": "^1.1.0",
+    "dateformat": "^2.0.0",
     "eonasdan-bootstrap-datetimepicker": "^4.17.45",
     "jquery": "^1.9.1",
     "jquery-typeahead": "^2.7.6",

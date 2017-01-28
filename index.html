@@ -8,6 +8,7 @@
     <script src="/node_modules/typeahead.js/dist/typeahead.bundle.min.js" type="text/javascript"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="/node_modules/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+    <script src="/node_modules/dateformat/lib/dateformat.js"></script>
     <link rel="stylesheet" href="/node_modules/bootstrap-select/dist/css/bootstrap-select.min.css">
     <link href="/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
@@ -46,6 +47,10 @@
           }
         }
       }(window.location))
+
+
+      //let dateFormat = require('dateformat');
+
     </script>
 
   </head>
@@ -164,11 +169,20 @@
         google.maps.event.addDomListener(window, 'load', initialize);
     </script>
     <script type="text/javascript">
+
         $(function () {
+            let now = new Date();
+            let tomorrow = new Date(now.valueOf());
+            tomorrow.setDate(tomorrow.getDate()+1);
+            const dateStr = dateFormat(tomorrow, "isoDate") + " 18:30";
+            console.dir(tomorrow);
+            console.dir(dateStr);
             $('#datetimepicker12').datetimepicker({
                 inline: true,
                 sideBySide: true,
-                minDate: "now"
+                minDate: "now",
+                defaultDate: dateStr,
+                stepping: 5
             }).on('dp.change', function(e) {
                 $('#dateval').val(e.date);
             });
