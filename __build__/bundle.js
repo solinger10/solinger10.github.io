@@ -28790,16 +28790,22 @@
 	        }
 	
 	        function displayResult(timeToArrive, duration, durationText) {
-	            //let leaveTime = startTime - duration;
-	            var resultText = "You should arrive at the airport by <span class='highlight'>" + new Date(timeToArrive).toTimeString() + "</span><br/>";
-	            resultText += "Duration of travel in milliseconds is <span class='highlight'>" + duration + "</span><br/>";
-	            resultText += "Duration of travel in english is <span class='highlight'>" + durationText + "</span><br/>";
+	            var leaveTime = new Date(timeToArrive - duration);
+	
+	            var resultText = "";
+	            //let resultText = "You should arrive at the airport by <span class='highlight'>" + new Date(timeToArrive).toTimeString() + "</span><br/>";
+	            //resultText += "Duration of travel in milliseconds is <span class='highlight'>" + duration + "</span><br/>";
+	            //resultText += "Duration of travel in english is <span class='highlight'>" + durationText + "</span><br/>";
 	            //let flightTimeObj = new Date(flightTime);
-	            var timeToLeave = new Date(timeToArrive - duration);
-	            resultText += "You should leave by <span class='highlight'>" + timeToLeave + "</span><br/>";
+	            var timeToLeave = dateFormat(leaveTime, "shortTime");
+	            var dayText = dateFormat(leaveTime, "isoDate") == dateFormat(new Date(), "isoDate") ? "today" : "on " + dateFormat(leaveTime, "dddd");
+	
+	            resultText += "You should leave by<span class='highlight'> " + timeToLeave + " </span>" + dayText + "<br/>";
 	            var msUntil = timeToLeave - Date.now();
 	            var minUntil = msUntil / 60000;
-	            resultText += "You have <span class='highlight'>" + minUntil + "</span> minutes to leave<br/>";
+	            if (minUntil < 0) {
+	                resultText += "<span class='small'>You should probably hurry</span><br/>";
+	            }
 	
 	            console.dir(resultText);
 	            $('#result').html(resultText);
@@ -28911,7 +28917,7 @@
 	            }).on('dp.change', function (e) {
 	                $('#dateval').val(e.date);
 	            });
-	            $('#dateval').val(new Date());
+	            $('#dateval').val(new Date(dateStr));
 	        });
 	    });
 	    //TODO airport picker into select?

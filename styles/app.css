@@ -157,7 +157,8 @@ code {
 }
 
 .highlight{
-  font-weight: bold;
+  font-weight: 400;
+  font-size: xx-large;
 }
 
 .floatright{

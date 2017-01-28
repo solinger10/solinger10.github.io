@@ -149,16 +149,25 @@ function Home() {
         }
 
         function displayResult(timeToArrive, duration, durationText){
-            //let leaveTime = startTime - duration;
-            let resultText = "You should arrive at the airport by <span class='highlight'>" + new Date(timeToArrive).toTimeString() + "</span><br/>";
-            resultText += "Duration of travel in milliseconds is <span class='highlight'>" + duration + "</span><br/>";
-            resultText += "Duration of travel in english is <span class='highlight'>" + durationText + "</span><br/>";
+            let leaveTime = new Date(timeToArrive - duration);
+
+
+
+            let resultText="";
+            //let resultText = "You should arrive at the airport by <span class='highlight'>" + new Date(timeToArrive).toTimeString() + "</span><br/>";
+            //resultText += "Duration of travel in milliseconds is <span class='highlight'>" + duration + "</span><br/>";
+            //resultText += "Duration of travel in english is <span class='highlight'>" + durationText + "</span><br/>";
             //let flightTimeObj = new Date(flightTime);
-            let timeToLeave = new Date(timeToArrive - duration);
-            resultText += "You should leave by <span class='highlight'>" + timeToLeave + "</span><br/>";
+            let timeToLeave = dateFormat(leaveTime, "shortTime");
+            let dayText = dateFormat(leaveTime, "isoDate") == dateFormat(new Date(), "isoDate") ? "today" : "on " + dateFormat(leaveTime, "dddd");
+
+            resultText += "You should leave by<span class='highlight'> " + timeToLeave + " </span>" + dayText + "<br/>";
             let msUntil = timeToLeave - Date.now();
             let minUntil = msUntil / 60000;
-            resultText += "You have <span class='highlight'>" + minUntil + "</span> minutes to leave<br/>";
+            if (minUntil < 0) {
+                resultText += "<span class='small'>You should probably hurry</span><br/>";
+
+            }
 
 
             console.dir(resultText);
@@ -274,7 +283,7 @@ function Home() {
             }).on('dp.change', function(e) {
                 $('#dateval').val(e.date);
             });
-            $('#dateval').val(new Date());
+            $('#dateval').val(new Date(dateStr));
         });
     });
     //TODO airport picker into select?
