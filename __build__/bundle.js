@@ -28673,11 +28673,7 @@
 	      )
 	    ),
 	    children,
-	    _react2.default.createElement(
-	      'div',
-	      { style: { color: '#A0A0A0', fontSize: '14px', marginTop: '50px', textAlign: 'center' } },
-	      '\xA9 2017 whenshouldileavefortheairport'
-	    )
+	    _react2.default.createElement('div', { style: { color: '#A0A0A0', fontSize: '14px', marginTop: '50px', textAlign: 'center' } })
 	  );
 	}
 	
@@ -28706,17 +28702,27 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	function Home() {
+	var JXON = __webpack_require__(/*! JXON */ 253);
 	
-	    var JXON = __webpack_require__(/*! JXON */ 253);
-	    function getAirports() {
-	        var request = new XMLHttpRequest();
-	        request.open("GET", "/xml/apcp.xml", false);
-	        request.send();
-	        var xml = request.responseXML;
-	        var jsonObj = JXON.build(xml);
-	        return jsonObj.airports.airport;
-	    }
+	function Home() {
+	    $.ajax({
+	        url: '/xml/apcp.xml',
+	        type: 'GET',
+	        dataType: 'xml',
+	        timeout: 1000,
+	        error: function error() {
+	            alert('Error loading XML document');
+	        },
+	        success: function success(xml) {
+	            //console.dir(xml);
+	            var jsonObj = JXON.build(xml);
+	            var airports = jsonObj.airports.airport;
+	            var strings = airports.map(function (e) {
+	                return e.shortcode + " - " + e.name + ", " + e.city + ", " + abbrState(e.state, "name");
+	            });
+	            setUpAirportsTypeAhead(strings);
+	        }
+	    });
 	    function abbrState(input, to) {
 	
 	        var states = [['Arizona', 'AZ'], ['Alabama', 'AL'], ['Alaska', 'AK'], ['Arizona', 'AZ'], ['Arkansas', 'AR'], ['California', 'CA'], ['Colorado', 'CO'], ['Connecticut', 'CT'], ['Delaware', 'DE'], ['Florida', 'FL'], ['Georgia', 'GA'], ['Hawaii', 'HI'], ['Idaho', 'ID'], ['Illinois', 'IL'], ['Indiana', 'IN'], ['Iowa', 'IA'], ['Kansas', 'KS'], ['Kentucky', 'KY'], ['Kentucky', 'KY'], ['Louisiana', 'LA'], ['Maine', 'ME'], ['Maryland', 'MD'], ['Massachusetts', 'MA'], ['Michigan', 'MI'], ['Minnesota', 'MN'], ['Mississippi', 'MS'], ['Missouri', 'MO'], ['Montana', 'MT'], ['Nebraska', 'NE'], ['Nevada', 'NV'], ['New Hampshire', 'NH'], ['New Jersey', 'NJ'], ['New Mexico', 'NM'], ['New York', 'NY'], ['North Carolina', 'NC'], ['North Dakota', 'ND'], ['Ohio', 'OH'], ['Oklahoma', 'OK'], ['Oregon', 'OR'], ['Pennsylvania', 'PA'], ['Rhode Island', 'RI'], ['South Carolina', 'SC'], ['South Dakota', 'SD'], ['Tennessee', 'TN'], ['Texas', 'TX'], ['Utah', 'UT'], ['Vermont', 'VT'], ['Virginia', 'VA'], ['Washington', 'WA'], ['West Virginia', 'WV'], ['Wisconsin', 'WI'], ['Wyoming', 'WY']];
@@ -28740,10 +28746,9 @@
 	        }
 	    }
 	
-	    var airports = getAirports();
-	    var airportsStrings = airports.map(function (e) {
-	        return e.shortcode + " - " + e.name + ", " + e.city + ", " + abbrState(e.state, "name");
-	    });
+	    //const airports = getAirports();
+	    //const airportsStrings = airports.map(function(e){ return e.shortcode + " - " + e.name + ", " + e.city + ", " + abbrState(e.state, "name")});
+	
 	
 	    var substringMatcher = function substringMatcher(strs) {
 	        return function findMatches(q, cb) {
@@ -28765,7 +28770,7 @@
 	        };
 	    };
 	
-	    $(document).ready(function () {
+	    function setUpAirportsTypeAhead(airportsStrings) {
 	        $('.typeahead').typeahead({
 	            hint: true,
 	            highlight: true,
@@ -28781,9 +28786,11 @@
 	                }
 	            }
 	        });
+	    }
+	
+	    $(document).ready(function () {
+	
 	        //$("#travelMode :input").change();
-	
-	
 	        function displayError() {
 	            $('#result').html("Uh oh, there was an error. Please reload the page and try again.");
 	        }
@@ -28952,12 +28959,12 @@
 	                    { className: 'form-group textola' },
 	                    _react2.default.createElement('input', { id: 'airportInput', type: 'text', name: 'a', onClick: function onClick(e) {
 	                            e.target.select();
-	                        }, className: 'form-control typeahead', placeholder: 'Airport Name or Code', autoComplete: 'off', defaultValue: "EWR - Newark International, Newark, New Jersey" })
+	                        }, className: 'form-control typeahead', placeholder: 'Airport Name or Code', autoComplete: 'off', defaultValue: "JFK - John F. Kennedy International, Jamaica, New York" })
 	                ),
 	                _react2.default.createElement(
 	                    'span',
 	                    { className: 'label' },
-	                    'Travel By'
+	                    'Travel Mode'
 	                ),
 	                _react2.default.createElement(
 	                    'span',

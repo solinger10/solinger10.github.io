@@ -1,17 +1,24 @@
 import React from 'react';
 import { Link } from 'react-router';
+let JXON = require('JXON');
 
 function Home() {
-
-    let JXON = require('JXON');
-    function getAirports() {
-        let request = new XMLHttpRequest();
-        request.open("GET", "/xml/apcp.xml", false);
-        request.send();
-        let xml = request.responseXML;
-        const jsonObj = JXON.build(xml);
-        return jsonObj.airports.airport;
-    }
+    $.ajax({
+        url: '/xml/apcp.xml',
+        type: 'GET',
+        dataType: 'xml',
+        timeout: 1000,
+        error: function(){
+            alert('Error loading XML document');
+        },
+        success: function(xml){
+            //console.dir(xml);
+            const jsonObj = JXON.build(xml);
+            let airports = jsonObj.airports.airport;
+            let strings = airports.map(function(e){ return e.shortcode + " - " + e.name + ", " + e.city + ", " + abbrState(e.state, "name")});
+            setUpAirportsTypeAhead(strings)
+        }
+    });
     function abbrState(input, to){
 
         const states = [
@@ -86,8 +93,8 @@ function Home() {
         }
     }
 
-    const airports = getAirports();
-    const airportsStrings = airports.map(function(e){ return e.shortcode + " - " + e.name + ", " + e.city + ", " + abbrState(e.state, "name")});
+    //const airports = getAirports();
+    //const airportsStrings = airports.map(function(e){ return e.shortcode + " - " + e.name + ", " + e.city + ", " + abbrState(e.state, "name")});
 
 
     let substringMatcher = function(strs) {
@@ -110,9 +117,7 @@ function Home() {
         };
     };
 
-
-
-    $(document).ready(function() {
+    function setUpAirportsTypeAhead(airportsStrings) {
         $('.typeahead').typeahead({
                 hint: true,
                 highlight: true,
@@ -133,17 +138,13 @@ function Home() {
                     }
                 }
             });
+    }
+
+
+
+    $(document).ready(function() {
+
         //$("#travelMode :input").change();
-
-
-
-
-
-
-
-
-
-
         function displayError() {
             $('#result').html("Uh oh, there was an error. Please reload the page and try again.");
         }
@@ -298,9 +299,9 @@ function Home() {
                 </div>
                 <span className="label">To Airport</span>
                 <div className="form-group textola">
-                    <input id="airportInput" type="text" name="a" onClick={(e)=>{e.target.select()}} className="form-control typeahead" placeholder="Airport Name or Code" autoComplete="off" defaultValue={"EWR - Newark International, Newark, New Jersey"}></input>
+                    <input id="airportInput" type="text" name="a" onClick={(e)=>{e.target.select()}} className="form-control typeahead" placeholder="Airport Name or Code" autoComplete="off" defaultValue={"JFK - John F. Kennedy International, Jamaica, New York"}></input>
                 </div>
-                <span className="label">Travel By</span>
+                <span className="label">Travel Mode</span>
                 <span className="label floatright">Arrive How Early</span>
                 <div className="form-group"  style={{margin:"0"}}></div>
                 <div>

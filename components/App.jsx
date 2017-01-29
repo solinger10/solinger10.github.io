@@ -19,7 +19,6 @@ function App({ children, routes }) {
 </header>
       {children}
       <div style={{ color: '#A0A0A0', fontSize: '14px', marginTop: '50px', textAlign: 'center'}}>
-          © 2017 whenshouldileavefortheairport
       </div>
     </div>
   );
