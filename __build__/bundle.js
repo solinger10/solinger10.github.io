@@ -80,8 +80,7 @@
 	var routes = _react2.default.createElement(
 	  _reactRouter.Route,
 	  { path: '/', mapMenuTitle: 'Home', component: _App2.default },
-	  _react2.default.createElement(_reactRouter.IndexRoute, { component: _Test2.default }),
-	  _react2.default.createElement(_reactRouter.Route, { path: 'test', mapMenuTitle: 'Test', component: _Home2.default }),
+	  _react2.default.createElement(_reactRouter.IndexRoute, { component: _Home2.default }),
 	  _react2.default.createElement(_reactRouter.Route, { path: '*', mapMenuTitle: 'Page Not Found', component: _PageNotFound2.default })
 	);
 	

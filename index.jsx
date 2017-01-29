@@ -11,8 +11,7 @@ import PageNotFound from './components/PageNotFound';
 
 const routes = (
   <Route path="/" mapMenuTitle="Home" component={App}>
-      <IndexRoute component={Test} />
-      <Route path="test" mapMenuTitle="Test" component={Home} />
+      <IndexRoute component={Home} />
       <Route path="*" mapMenuTitle="Page Not Found" component={PageNotFound} />
   </Route>
 );
