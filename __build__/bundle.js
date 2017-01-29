@@ -28808,7 +28808,7 @@
 	                resultText += "<span class='small'>You should probably hurry</span><br/>";
 	            }
 	
-	            console.dir(resultText);
+	            //console.dir(resultText);
 	            $('#result').html(resultText);
 	        }
 	
@@ -28833,7 +28833,7 @@
 	                    trafficModel: 'pessimistic'
 	                }
 	            };
-	            console.dir(config);
+	            //console.dir(config);
 	            service.getDistanceMatrix(config, function (response, status) {
 	                callback(timeToArrive, estimatedDeparture, transitMode, round, response, status, startLocation, airport);
 	            });
@@ -28842,22 +28842,22 @@
 	        function callback(timeToArrive, estimatedDeparture, transitMode, round, response, status, startLocation, airport) {
 	
 	            if (status == google.maps.DistanceMatrixStatus.OK) {
-	                console.log(response);
+	                //console.log(response);
 	                var isDriving = transitMode + '' == "driving";
 	                var durationObj = isDriving ? response.rows[0].elements[0].duration_in_traffic : response.rows[0].elements[0].duration;
 	                var duration = durationObj.value * 1000;
 	                var durationText = durationObj.text;
-	                console.log(response);
-	                console.log(durationText);
-	                console.log(new Date(estimatedDeparture + duration));
-	                console.log(round);
+	                //console.log(response);
+	                //console.log(durationText);
+	                //console.log(new Date(estimatedDeparture + duration));
+	                //console.log(round);
 	                if (round < 2 && isDriving) {
 	                    calculateDistances(timeToArrive, timeToArrive - duration, transitMode, round + 1, startLocation, airport);
 	                } else {
 	                    displayResult(timeToArrive, duration, durationText);
 	                }
 	            } else {
-	                console.log(status);
+	                //console.log(status);
 	                displayError();
 	            }
 	        }
@@ -28870,11 +28870,11 @@
 	            var hour = document.getElementById("hr").value;
 	            var minute = document.getElementById("min").value;
 	            var airportTimeModifier = hour * 60 + parseInt(minute);
-	            console.dir(airport);
-	            console.dir(startLocation);
-	            console.dir(flightTime);
-	            console.dir(transitMode);
-	            console.dir(airportTimeModifier);
+	            //console.dir(airport);
+	            //console.dir(startLocation);
+	            //console.dir(flightTime);
+	            //console.dir(transitMode);
+	            //console.dir(airportTimeModifier);
 	
 	            var flightTimeObj = new Date(flightTime);
 	            var timeToArrive = flightTimeObj - airportTimeModifier * 60000;
@@ -28888,7 +28888,7 @@
 	            try {
 	                handleSubmit(e);
 	            } catch (e) {
-	                console.log("exception caught");
+	                //console.log("exception caught");
 	                console.log(e);
 	                displayError();
 	            }
@@ -28907,8 +28907,8 @@
 	            var tomorrow = new Date(now.valueOf());
 	            tomorrow.setDate(tomorrow.getDate() + 1);
 	            var dateStr = dateFormat(tomorrow, "isoDate") + " 18:30";
-	            console.dir(tomorrow);
-	            console.dir(dateStr);
+	            //console.dir(tomorrow);
+	            //console.dir(dateStr);
 	            $('#datetimepicker12').datetimepicker({
 	                inline: true,
 	                sideBySide: true,
@@ -28921,12 +28921,6 @@
 	            $('#dateval').val(new Date(dateStr));
 	        });
 	    });
-	    //TODO airport picker into select?
-	    //TODO make date time a dropdown
-	    //TODO location onClick="this.select();"
-	    //TODO bootstrapify autcomplete maps location
-	    //TODO duratoin picker out of datetimepicker?
-	
 	
 	    return _react2.default.createElement(
 	        'div',

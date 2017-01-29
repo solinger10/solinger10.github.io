@@ -170,7 +170,7 @@ function Home() {
             }
 
 
-            console.dir(resultText);
+            //console.dir(resultText);
             $('#result').html(resultText);
         }
 
@@ -195,29 +195,29 @@ function Home() {
                     trafficModel: 'pessimistic'
                 }
             };
-            console.dir(config);
+            //console.dir(config);
             service.getDistanceMatrix(config, function(response, status){callback(timeToArrive, estimatedDeparture, transitMode, round, response, status, startLocation, airport)});
         }
 
         function callback(timeToArrive, estimatedDeparture, transitMode, round, response, status, startLocation, airport) {
 
             if (status == google.maps.DistanceMatrixStatus.OK) {
-                console.log(response);
+                //console.log(response);
                 let isDriving = (transitMode + '' == "driving");
                 let durationObj = isDriving ? response.rows[0].elements[0].duration_in_traffic : response.rows[0].elements[0].duration;
                 let duration = durationObj.value * 1000;
                 let durationText = durationObj.text;
-                console.log(response);
-                console.log(durationText);
-                console.log(new Date(estimatedDeparture + duration));
-                console.log(round);
+                //console.log(response);
+                //console.log(durationText);
+                //console.log(new Date(estimatedDeparture + duration));
+                //console.log(round);
                 if (round < 2 && isDriving) {
                     calculateDistances(timeToArrive, timeToArrive - duration, transitMode, round + 1, startLocation, airport)
                 } else {
                     displayResult(timeToArrive, duration, durationText)
                 }
             } else {
-                console.log(status);
+                //console.log(status);
                 displayError()
             }
         }
@@ -230,11 +230,11 @@ function Home() {
             let hour = document.getElementById("hr").value;
             let minute = document.getElementById("min").value;
             let airportTimeModifier = hour * 60 + parseInt(minute);
-            console.dir(airport);
-            console.dir(startLocation);
-            console.dir(flightTime);
-            console.dir(transitMode);
-            console.dir(airportTimeModifier);
+            //console.dir(airport);
+            //console.dir(startLocation);
+            //console.dir(flightTime);
+            //console.dir(transitMode);
+            //console.dir(airportTimeModifier);
 
             let flightTimeObj = new Date(flightTime);
             let timeToArrive = flightTimeObj - airportTimeModifier * 60000;
@@ -248,7 +248,7 @@ function Home() {
             try{
                 handleSubmit(e);
             } catch(e) {
-                console.log("exception caught");
+                //console.log("exception caught");
                 console.log(e);
                 displayError();
             }
@@ -272,8 +272,8 @@ function Home() {
             let tomorrow = new Date(now.valueOf());
             tomorrow.setDate(tomorrow.getDate()+1);
             const dateStr = dateFormat(tomorrow, "isoDate") + " 18:30";
-            console.dir(tomorrow);
-            console.dir(dateStr);
+            //console.dir(tomorrow);
+            //console.dir(dateStr);
             $('#datetimepicker12').datetimepicker({
                 inline: true,
                 sideBySide: true,
@@ -286,11 +286,6 @@ function Home() {
             $('#dateval').val(new Date(dateStr));
         });
     });
-    //TODO airport picker into select?
-    //TODO make date time a dropdown
-    //TODO location onClick="this.select();"
-    //TODO bootstrapify autcomplete maps location
-    //TODO duratoin picker out of datetimepicker?
 
 
   return (
