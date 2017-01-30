@@ -12,7 +12,7 @@ html, body, div, span, a, p, ul, li, h1, code, nav {
 }
 
 html {
-  background-color: #A0A0A0;
+  background-color: #F0F0F0;
 }
 
 body {
@@ -43,16 +43,16 @@ body {
   min-width: 320px;
   max-width: 45vw;
   padding: 3vh 0 12vh 0;
-
+  margin: 0 auto;
   /*center based on vw to prevent content jump when vertical scroll bar show/hide
   note: vw/vh include the width of scroll bars*/
   position: relative;
-  left: 50vw;
+  /*left: 50vw;
   -webkit-transform: translate(-50%, 0);
   -moz-transform: translate(-50%, 0);
   -ms-transform: translate(-50%, 0);
   -o-transform: translate(-50%, 0);
-  transform: translate(-50%, 0);
+  transform: translate(-50%, 0);*/
 }
 
 /*use responsive max-width to simulate padding/margin to allow

@@ -28711,7 +28711,7 @@
 	        dataType: 'xml',
 	        timeout: 1000,
 	        error: function error() {
-	            alert('Error loading XML document');
+	            console.error('Error loading XML document');
 	        },
 	        success: function success(xml) {
 	            //console.dir(xml);

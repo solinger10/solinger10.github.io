@@ -9,7 +9,7 @@ function Home() {
         dataType: 'xml',
         timeout: 1000,
         error: function(){
-            alert('Error loading XML document');
+            console.error('Error loading XML document');
         },
         success: function(xml){
             //console.dir(xml);
