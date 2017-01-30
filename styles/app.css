@@ -12,7 +12,7 @@ html, body, div, span, a, p, ul, li, h1, code, nav {
 }
 
 html {
-  background-color: rgb(0, 120, 0);
+  background-color: #A0A0A0;
 }
 
 body {
@@ -40,7 +40,7 @@ body {
 
 /*reactroot div*/
 #root > div {
-  min-width: 400px;
+  min-width: 320px;
   max-width: 45vw;
   padding: 3vh 0 12vh 0;
 
@@ -231,7 +231,7 @@ text-indent: 0px;
 }
 
 .dropdown-menu>li>a {
-  padding: 3px 12px;
+  padding: 3px 8px;
 }
 /*
 .hour{
@@ -252,4 +252,12 @@ select {
 /*for IE10*/
 select::-ms-expand {
     display: none;
+}
+
+.input-group-addon {
+  padding: 6px 8px;
+}
+
+.btn {
+  padding: 6px 8px;
 }

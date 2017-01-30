@@ -28997,7 +28997,7 @@
 	                    ),
 	                    _react2.default.createElement(
 	                        'div',
-	                        { style: { width: "170px", float: "right", marginRight: "5%" } },
+	                        { style: { width: "144px", float: "right", marginRight: "5%" } },
 	                        _react2.default.createElement(
 	                            'div',
 	                            { className: 'input-group hr', style: { maxWidth: "1px", float: "left" } },

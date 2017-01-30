@@ -317,7 +317,7 @@ function Home() {
                             </label>
                         </div>
                     </div>
-                    <div style={{width:"170px", float: "right", marginRight:"5%"}}>
+                    <div style={{width:"144px", float: "right", marginRight:"5%"}}>
                         <div className="input-group hr"  style={{maxWidth:"1px", float: "left"}}>
                             <select className="form-control selectpicker" id="hr">
                                 <option>1</option>
