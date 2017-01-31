@@ -28795,7 +28795,7 @@
 	            $('#result').html("Uh oh, there was an error. Please reload the page and try again.");
 	        }
 	
-	        function displayResult(timeToArrive, duration, durationText) {
+	        function displayResult(timeToArrive, duration, startLocation, airport, isDriving) {
 	            var leaveTime = new Date(timeToArrive - duration);
 	
 	            var resultText = "";
@@ -28807,12 +28807,21 @@
 	            var dayText = dateFormat(leaveTime, "isoDate") == dateFormat(new Date(), "isoDate") ? "today" : "on " + dateFormat(leaveTime, "dddd");
 	
 	            resultText += "You should leave by<span class='highlight'> " + timeToLeave + " </span>" + dayText + "<br/>";
-	            var msUntil = timeToLeave - Date.now();
-	            var minUntil = msUntil / 60000;
+	            //let msUntil = timeToLeave - Date.now();
+	            //let minUntil = msUntil / 60000;
 	            //resultText += "It's going to take " + minUntil + " minutes of travel time<br/>";
-	            if (minUntil < 0) {
+	            /*if (minUntil < 0) {
 	                resultText += "<span class='small'>You should probably hurry</span><br/>";
-	            }
+	            }*/
+	
+	            var arrivalDateStr = dateFormat(new Date(timeToArrive), "mm/dd/yyyy");
+	            var arrivalTimeStr = dateFormat(new Date(timeToArrive), "HH:MM");
+	            var startStr = encodeURIComponent(startLocation);
+	            var destStr = encodeURIComponent(airport);
+	            var travelTypeFlag = isDriving ? 'd' : 'r';
+	            var directionsUrl = "https://www.google.com/maps?saddr=" + startStr + "&daddr=" + destStr + "&dirflg=" + travelTypeFlag + "&ttype=arr&date=" + arrivalDateStr + "&time=" + arrivalTimeStr;
+	
+	            resultText += '<br/><a target="_blank" class="small" href="' + directionsUrl + '">View directions on Google Maps</a><br/>';
 	
 	            //console.dir(resultText);
 	            $('#result').html(resultText);
@@ -28848,7 +28857,7 @@
 	        function callback(timeToArrive, estimatedDeparture, transitMode, round, response, status, startLocation, airport) {
 	
 	            if (status == google.maps.DistanceMatrixStatus.OK) {
-	                //console.log(response);
+	                console.log(response);
 	                var isDriving = transitMode + '' == "driving";
 	                var durationObj = isDriving ? response.rows[0].elements[0].duration_in_traffic : response.rows[0].elements[0].duration;
 	                var duration = durationObj.value * 1000;
@@ -28860,7 +28869,7 @@
 	                if (round < 2 && isDriving) {
 	                    calculateDistances(timeToArrive, timeToArrive - duration, transitMode, round + 1, startLocation, airport);
 	                } else {
-	                    displayResult(timeToArrive, duration, durationText);
+	                    displayResult(timeToArrive, duration, startLocation, airport, isDriving);
 	                }
 	            } else {
 	                //console.log(status);
@@ -28949,6 +28958,7 @@
 	                            e.target.select();
 	                        }, name: 's', placeholder: 'Location or Address', className: 'form-control', defaultValue: "New York, NY, United States" })
 	                ),
+	                _react2.default.createElement('hr', null),
 	                _react2.default.createElement(
 	                    'span',
 	                    { className: 'label' },
@@ -28961,6 +28971,7 @@
 	                            e.target.select();
 	                        }, className: 'form-control typeahead', placeholder: 'Airport Name or Code', autoComplete: 'off', defaultValue: "JFK - John F. Kennedy International, Jamaica, New York" })
 	                ),
+	                _react2.default.createElement('hr', null),
 	                _react2.default.createElement(
 	                    'span',
 	                    { className: 'label' },
@@ -29067,10 +29078,11 @@
 	                    )
 	                ),
 	                _react2.default.createElement('div', { className: 'form-group', style: { padding: "0" } }),
+	                _react2.default.createElement('hr', null),
 	                _react2.default.createElement(
 	                    'span',
 	                    { className: 'label' },
-	                    'Flight Time'
+	                    'Flight Departure Time'
 	                ),
 	                _react2.default.createElement(
 	                    'div',

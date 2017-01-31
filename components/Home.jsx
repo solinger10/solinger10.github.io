@@ -149,7 +149,7 @@ function Home() {
             $('#result').html("Uh oh, there was an error. Please reload the page and try again.");
         }
 
-        function displayResult(timeToArrive, duration, durationText){
+        function displayResult(timeToArrive, duration, startLocation, airport, isDriving){
             let leaveTime = new Date(timeToArrive - duration);
 
 
@@ -163,13 +163,23 @@ function Home() {
             let dayText = dateFormat(leaveTime, "isoDate") == dateFormat(new Date(), "isoDate") ? "today" : "on " + dateFormat(leaveTime, "dddd");
 
             resultText += "You should leave by<span class='highlight'> " + timeToLeave + " </span>" + dayText + "<br/>";
-            let msUntil = timeToLeave - Date.now();
-            let minUntil = msUntil / 60000;
+            //let msUntil = timeToLeave - Date.now();
+            //let minUntil = msUntil / 60000;
             //resultText += "It's going to take " + minUntil + " minutes of travel time<br/>";
-            if (minUntil < 0) {
+            /*if (minUntil < 0) {
                 resultText += "<span class='small'>You should probably hurry</span><br/>";
-            }
+            }*/
 
+
+
+            let arrivalDateStr = dateFormat(new Date(timeToArrive), "mm/dd/yyyy");
+            let arrivalTimeStr = dateFormat(new Date(timeToArrive), "HH:MM");
+            let startStr = encodeURIComponent(startLocation);
+            let destStr = encodeURIComponent(airport);
+            let travelTypeFlag = isDriving ? 'd' : 'r';
+            let directionsUrl = "https://www.google.com/maps?saddr=" + startStr + "&daddr=" + destStr + "&dirflg=" + travelTypeFlag + "&ttype=arr&date=" + arrivalDateStr + "&time=" + arrivalTimeStr;
+
+            resultText += '<br/><a target="_blank" class="small" href="' + directionsUrl + '">View directions on Google Maps</a><br/>';
 
             //console.dir(resultText);
             $('#result').html(resultText);
@@ -203,7 +213,7 @@ function Home() {
         function callback(timeToArrive, estimatedDeparture, transitMode, round, response, status, startLocation, airport) {
 
             if (status == google.maps.DistanceMatrixStatus.OK) {
-                //console.log(response);
+                console.log(response);
                 let isDriving = (transitMode + '' == "driving");
                 let durationObj = isDriving ? response.rows[0].elements[0].duration_in_traffic : response.rows[0].elements[0].duration;
                 let duration = durationObj.value * 1000;
@@ -215,7 +225,7 @@ function Home() {
                 if (round < 2 && isDriving) {
                     calculateDistances(timeToArrive, timeToArrive - duration, transitMode, round + 1, startLocation, airport)
                 } else {
-                    displayResult(timeToArrive, duration, durationText)
+                    displayResult(timeToArrive, duration, startLocation, airport, isDriving)
                 }
             } else {
                 //console.log(status);
@@ -297,10 +307,12 @@ function Home() {
                 <div className="form-group textola">
                     <input id="startInput" type="text" onClick={(e)=>{e.target.select()}} name="s" placeholder="Location or Address" className="form-control" defaultValue={"New York, NY, United States"}></input>
                 </div>
+                <hr />
                 <span className="label">To Airport</span>
                 <div className="form-group textola">
                     <input id="airportInput" type="text" name="a" onClick={(e)=>{e.target.select()}} className="form-control typeahead" placeholder="Airport Name or Code" autoComplete="off" defaultValue={"JFK - John F. Kennedy International, Jamaica, New York"}></input>
                 </div>
+                <hr />
                 <span className="label">Travel Mode</span>
                 <span className="label floatright">Arrive How Early</span>
                 <div className="form-group"  style={{margin:"0"}}></div>
@@ -339,7 +351,8 @@ function Home() {
                     </div>
                 </div>
                 <div className="form-group"  style={{padding:"0"}}></div>
-                <span className="label">Flight Time</span>
+                <hr />
+                <span className="label">Flight Departure Time</span>
                 <div className="form-group">
                     <div id="datetimepicker12"></div>
                     <input id="dateval" hidden></input>
