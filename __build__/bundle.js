@@ -29011,7 +29011,7 @@
 	                        { style: { width: "144px", float: "right", marginRight: "5%" } },
 	                        _react2.default.createElement(
 	                            'div',
-	                            { className: 'input-group hr', style: { maxWidth: "1px", float: "left" } },
+	                            { className: 'input-group hr', style: { width: "60px", float: "left" } },
 	                            _react2.default.createElement(
 	                                'select',
 	                                { className: 'form-control selectpicker', id: 'hr' },
@@ -29044,7 +29044,7 @@
 	                        ),
 	                        _react2.default.createElement(
 	                            'div',
-	                            { className: 'input-group min', style: { maxWidth: "1px", float: "right" } },
+	                            { className: 'input-group min', style: { width: "79px", float: "right" } },
 	                            _react2.default.createElement(
 	                                'select',
 	                                { defaultValue: 30, className: 'form-control selectpicker', id: 'min' },

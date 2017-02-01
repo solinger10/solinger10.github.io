@@ -240,6 +240,8 @@ text-indent: 0px;
 
 .hr .min {
     max-width: 1px;
+  width:79px;
+  float: right;
 }
 
 select {

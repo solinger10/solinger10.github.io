@@ -330,7 +330,7 @@ function Home() {
                         </div>
                     </div>
                     <div style={{width:"144px", float: "right", marginRight:"5%"}}>
-                        <div className="input-group hr"  style={{maxWidth:"1px", float: "left"}}>
+                        <div className="input-group hr"  style={{width:"60px", float: "left"}}>
                             <select className="form-control selectpicker" id="hr">
                                 <option>1</option>
                                 <option>2</option>
@@ -339,7 +339,7 @@ function Home() {
                             </select>
                             <span className="input-group-addon" id="basic-addon2">hr</span>
                         </div>
-                        <div className="input-group min" style={{maxWidth:"1px", float: "right"}}>
+                        <div className="input-group min" style={{width:"79px", float: "right"}}>
                             <select defaultValue={30} className="form-control selectpicker" id="min">
                                 <option>0</option>
                                 <option>15</option>
