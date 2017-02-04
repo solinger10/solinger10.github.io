@@ -28723,6 +28723,7 @@
 	            setUpAirportsTypeAhead(strings);
 	        }
 	    });
+	
 	    function abbrState(input, to) {
 	
 	        var states = [['Arizona', 'AZ'], ['Alabama', 'AL'], ['Alaska', 'AK'], ['Arizona', 'AZ'], ['Arkansas', 'AR'], ['California', 'CA'], ['Colorado', 'CO'], ['Connecticut', 'CT'], ['Delaware', 'DE'], ['Florida', 'FL'], ['Georgia', 'GA'], ['Hawaii', 'HI'], ['Idaho', 'ID'], ['Illinois', 'IL'], ['Indiana', 'IN'], ['Iowa', 'IA'], ['Kansas', 'KS'], ['Kentucky', 'KY'], ['Kentucky', 'KY'], ['Louisiana', 'LA'], ['Maine', 'ME'], ['Maryland', 'MD'], ['Massachusetts', 'MA'], ['Michigan', 'MI'], ['Minnesota', 'MN'], ['Mississippi', 'MS'], ['Missouri', 'MO'], ['Montana', 'MT'], ['Nebraska', 'NE'], ['Nevada', 'NV'], ['New Hampshire', 'NH'], ['New Jersey', 'NJ'], ['New Mexico', 'NM'], ['New York', 'NY'], ['North Carolina', 'NC'], ['North Dakota', 'ND'], ['Ohio', 'OH'], ['Oklahoma', 'OK'], ['Oregon', 'OR'], ['Pennsylvania', 'PA'], ['Rhode Island', 'RI'], ['South Carolina', 'SC'], ['South Dakota', 'SD'], ['Tennessee', 'TN'], ['Texas', 'TX'], ['Utah', 'UT'], ['Vermont', 'VT'], ['Virginia', 'VA'], ['Washington', 'WA'], ['West Virginia', 'WV'], ['Wisconsin', 'WI'], ['Wyoming', 'WY']];
@@ -28825,6 +28826,7 @@
 	
 	            //console.dir(resultText);
 	            $('#result').html(resultText);
+	            $(window).scrollTo(document.getElementById('result'), 1000);
 	        }
 	
 	        function calculateDistances(timeToArrive, estimatedDeparture, transitMode, round, startLocation, airport) {
@@ -28857,7 +28859,7 @@
 	        function callback(timeToArrive, estimatedDeparture, transitMode, round, response, status, startLocation, airport) {
 	
 	            if (status == google.maps.DistanceMatrixStatus.OK) {
-	                console.log(response);
+	                //console.log(response);
 	                var isDriving = transitMode + '' == "driving";
 	                var durationObj = isDriving ? response.rows[0].elements[0].duration_in_traffic : response.rows[0].elements[0].duration;
 	                var duration = durationObj.value * 1000;
@@ -28940,6 +28942,7 @@
 	    return _react2.default.createElement(
 	        'div',
 	        null,
+	        _react2.default.createElement('div', { id: 'message' }),
 	        _react2.default.createElement(
 	            'div',
 	            null,

@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAHLZqZ7b2rtIiu5zD_zzLxhrqCd8HB5rw&libraries=places"></script>
+    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyC-g4IcHhhEy8_MZ8s0C5ksg2XI-iQ9ZXg&libraries=places"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script type="text/javascript" src="/node_modules/moment/min/moment.min.js"></script>
     <script src="/node_modules/jquery-typeahead/dist/jquery.typeahead.min.js" type="text/javascript"></script>
     <script src="/node_modules/typeahead.js/dist/typeahead.bundle.min.js" type="text/javascript"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/node_modules/jquery.scrollto/jquery.scrollTo.min.js"></script>
     <script src="/node_modules/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
     <script src="/node_modules/dateformat/lib/dateformat.js"></script>
     <link rel="stylesheet" href="/node_modules/bootstrap-select/dist/css/bootstrap-select.min.css">
@@ -30,6 +31,11 @@
 
         ga('create', 'UA-91024448-1', 'auto');
         ga('send', 'pageview');
+
+        function gm_authFailure() { 
+            console.log("Uh oh! There was an error loading the Google Maps API. Please refresh the page and try again.");
+            $('#message').html("<span class='error'>Uh oh! There was an error loading the Google Maps API. Please refresh the page and try again.<span>");
+        };
     </script>
     </script>
     <script type="text/javascript">

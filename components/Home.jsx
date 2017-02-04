@@ -19,6 +19,8 @@ function Home() {
             setUpAirportsTypeAhead(strings)
         }
     });
+
+
     function abbrState(input, to){
 
         const states = [
@@ -183,6 +185,7 @@ function Home() {
 
             //console.dir(resultText);
             $('#result').html(resultText);
+            $(window).scrollTo(document.getElementById('result'), 1000);
         }
 
         function calculateDistances(timeToArrive, estimatedDeparture, transitMode, round, startLocation, airport) {
@@ -213,7 +216,7 @@ function Home() {
         function callback(timeToArrive, estimatedDeparture, transitMode, round, response, status, startLocation, airport) {
 
             if (status == google.maps.DistanceMatrixStatus.OK) {
-                console.log(response);
+                //console.log(response);
                 let isDriving = (transitMode + '' == "driving");
                 let durationObj = isDriving ? response.rows[0].elements[0].duration_in_traffic : response.rows[0].elements[0].duration;
                 let duration = durationObj.value * 1000;
@@ -301,6 +304,7 @@ function Home() {
 
   return (
     <div>
+        <div id="message"></div>
         <div>
             <form className="airport-form">
                 <span className="label">Leaving From</span>
