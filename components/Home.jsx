@@ -151,7 +151,7 @@ function Home() {
             $('#result').html("Uh oh, there was an error. Please reload the page and try again.");
         }
 
-        function displayResult(timeToArrive, duration, startLocation, airport, isDriving){
+        function displayResult(timeToArrive, duration, startLocation, airport, isDriving, durationText){
             let leaveTime = new Date(timeToArrive - duration);
 
 
@@ -179,8 +179,10 @@ function Home() {
             let startStr = encodeURIComponent(startLocation);
             let destStr = encodeURIComponent(airport);
             let travelTypeFlag = isDriving ? 'd' : 'r';
+            let travelText = isDriving ? 'drive' : 'take public transit';
             let directionsUrl = "https://www.google.com/maps?saddr=" + startStr + "&daddr=" + destStr + "&dirflg=" + travelTypeFlag + "&ttype=arr&date=" + arrivalDateStr + "&time=" + arrivalTimeStr;
 
+            //resultText += '<br/><span class="small">It will take ' + durationText + ' to ' + travelText + ' to the airport.</span><br/>';
             resultText += '<br/><a target="_blank" class="small" href="' + directionsUrl + '">View directions on Google Maps</a><br/>';
 
             //console.dir(resultText);
@@ -228,7 +230,7 @@ function Home() {
                 if (round < 2 && isDriving) {
                     calculateDistances(timeToArrive, timeToArrive - duration, transitMode, round + 1, startLocation, airport)
                 } else {
-                    displayResult(timeToArrive, duration, startLocation, airport, isDriving)
+                    displayResult(timeToArrive, duration, startLocation, airport, isDriving, durationText)
                 }
             } else {
                 //console.log(status);
