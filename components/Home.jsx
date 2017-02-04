@@ -185,7 +185,7 @@ function Home() {
 
             //console.dir(resultText);
             $('#result').html(resultText);
-            $(window).scrollTo(document.getElementById('result'), 1000);
+            $(window).scrollTo(document.getElementById('result'),1000);
         }
 
         function calculateDistances(timeToArrive, estimatedDeparture, transitMode, round, startLocation, airport) {
