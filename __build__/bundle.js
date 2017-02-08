@@ -28669,7 +28669,11 @@
 	      _react2.default.createElement(
 	        'h1',
 	        null,
-	        'When should I leave for the airport?'
+	        _react2.default.createElement(
+	          'title',
+	          null,
+	          'When should I leave for the airport?'
+	        )
 	      )
 	    ),
 	    children,
