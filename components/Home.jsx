@@ -271,15 +271,49 @@ function Home() {
         });
 
         function initialize() {
-
             let input = document.getElementById('startInput');
-            let autocomplete = new google.maps.places.Autocomplete(input);
+            new google.maps.places.Autocomplete(input);
         }
 
         google.maps.event.addDomListener(window, 'load', initialize);
 
+        $( "#locationButton" ).click(function() {
+            //let infoWindow = new google.maps.InfoWindow;
+            let geocoder = new google.maps.Geocoder;
+            //let input = document.getElementById('startInput');
+            // Try HTML5 geolocation.
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    let pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                    geocoder.geocode({'location': pos}, function(results, status) {
+                        if (status === 'OK') {
+                            if (results[0]) {
+                                console.log(results);
+                                $('#startInput').val(results[0].formatted_address);
+                            } else {
+                                window.alert('No results found');
+                            }
+                        } else {
+                            window.alert('Geocoder failed due to: ' + status);
+                        }
+                    });
+                }, function() {
+                    handleLocationError(true);
+                });
+            } else {
+                handleLocationError(false);
+            }
 
-
+            function handleLocationError(browserHasGeolocation) {
+                let txt = browserHasGeolocation ?
+                    'Error: The Geolocation service failed.' :
+                    'Error: Your browser doesn\'t support geolocation.';
+                $('#startInput').val(txt)
+            }
+        });
 
 
 
@@ -310,19 +344,22 @@ function Home() {
         <div>
             <form className="airport-form">
                 <span className="label">Leaving From</span>
-                <div className="form-group textola">
-                    <input id="startInput" type="text" onClick={(e)=>{e.target.select()}} name="s" placeholder="Location or Address" className="form-control" defaultValue={"New York, NY, United States"}></input>
+                <div className="form-group textola side-button">
+                    <input id="startInput" type="text" name="s"  onClick={(e)=>{e.target.setSelectionRange(0, 1000)}} placeholder="New York, NY, United States" className="form-control"></input>
+                    <span className="input-group-btn">
+                        <button id="locationButton" className="btn btn-secondary" type="button"><span className="glyphicon glyphicon-map-marker"> </span></button>
+                      </span>
                 </div>
                 <hr />
                 <span className="label">To Airport</span>
                 <div className="form-group textola">
-                    <input id="airportInput" type="text" name="a" onClick={(e)=>{e.target.select()}} className="form-control typeahead" placeholder="Airport Name or Code" autoComplete="off" defaultValue={"JFK - John F. Kennedy International, Jamaica, New York"}></input>
+                    <input id="airportInput" type="text" name="a"  onClick={(e)=>{e.target.setSelectionRange(0, 1000)}} className="form-control typeahead" placeholder="JFK - John F. Kennedy International, Jamaica, New York" autoComplete="off"></input>
                 </div>
                 <hr />
                 <span className="label">Travel Mode</span>
                 <span className="label floatright">Arrive How Early</span>
                 <div className="form-group"  style={{margin:"0"}}></div>
-                <div>
+                <div className="inputs">
                     <div id="radio1" className="floatleft" >
                         <div id="travelMode"  className="btn-group" data-toggle="buttons">
                             <label className="btn btn-default active">
@@ -349,7 +386,7 @@ function Home() {
                             <select defaultValue={30} className="form-control selectpicker" id="min">
                                 <option>0</option>
                                 <option>15</option>
-                                <option >30</option>
+                                <option>30</option>
                                 <option>45</option>
                             </select>
                             <span className="input-group-addon" id="basic-addon2">min</span>

@@ -239,7 +239,7 @@ text-indent: 0px;
 }*/
 
 .hr .min {
-    max-width: 1px;
+  max-width: 1px;
   width:79px;
   float: right;
 }
@@ -281,3 +281,31 @@ hr{
   color: #f00;
 }
 
+input[type='text'],
+input[type='number'],
+textarea {
+  font-size: 16px;
+}
+
+.inputs {
+  font-size: 16px;
+}
+
+.dropdown-menu::before,
+.dropdown-menu::after {
+  border: none;
+  content: none;
+}
+.caret {
+  color: rgba(0, 0, 0, 0);
+}
+
+.side-button {
+  display: table;
+}
+.side-button input {
+  border-radius: 4px 0px 0px 4px;
+}
+.side-button span button {
+  background-color: #dddddd;
+}

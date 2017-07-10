@@ -26,6 +26,8 @@
     "react-dom": "^15.1.0",
     "react-router": "^2.4.1",
     "typeahead.js": "^0.11.1",
+    "vim": "^0.1.0",
+    "webpack-dev-server": "^2.5.1",
     "whatwg-fetch": "^2.0.1",
     "xml-parser": "^1.2.1",
     "xml2json": "^0.10.0"

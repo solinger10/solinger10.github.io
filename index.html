@@ -18,7 +18,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>When should I leave for the airport?</title>
-    <meta name="description" content="When should I leave for the airport? What time should you leave for the airport with enough time to catch your flight? Find out quickly and easily with wsilfta.com!">
+    <meta name="description" content="What time should you leave for the airport to catch your flight? Find out with wsilfta!">
 
     <style>html{background-color: #F0F0F0;}</style>
 
@@ -37,26 +37,9 @@
             $('#message').html("<span class='error'>Uh oh! There was an error loading the Google Maps API. Please refresh the page and try again.</span>");
         };
     </script>
-    </script>
     <script type="text/javascript">
-      (function(l) {
-        if (l.search) {
-          var q = {};
-          l.search.slice(1).split('&').forEach(function(v) {
-            var a = v.split('=');
-            q[a[0]] = a.slice(1).join('=').replace(/~and~/g, '&');
-          });
-          if (q.p !== undefined) {
-            window.history.replaceState(null, null,
-              l.pathname.slice(0, -1) + (q.p || '') +
-              (q.q ? ('?' + q.q) : '') +
-              l.hash
-            );
-          }
-        }
-      }(window.location));
+      !function(a){if(a.search){var b={};a.search.slice(1).split("&").forEach(function(a){var c=a.split("=");b[c[0]]=c.slice(1).join("=").replace(/~and~/g,"&")}),console.dir(b.p),console.log(void 0!==b.p),void 0!==b.p&&window.history.replaceState(null,null,a.pathname.slice(0,-1)+(b.p||"")+(b.q?"?"+b.q:"")+a.hash)}}(window.location);
     </script>
-
   </head>
   <body>
     <div id="root"></div>
