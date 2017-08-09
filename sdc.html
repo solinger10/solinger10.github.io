@@ -11,7 +11,7 @@
         }
     </style>
     <script>
-        $.getJSON('https://anyorigin.com/go?url=https%3A//mbsy.co/hRP2L&callback=?', function(data){
+        $.get("https://cors-anywhere.herokuapp.com/https://mbsy.co/hRP2L", function(data) {
             $('#output').html(data.contents);
         });
     </script>
