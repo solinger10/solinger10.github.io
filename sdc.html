@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="output" class="output">
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <meta charset="UTF-8">
@@ -11,8 +11,8 @@
         }
     </style>
     <script>
-        $.get("https://cors-anywhere.herokuapp.com/https://mbsy.co/hRP2L", function(data) {
-            alert(data);
+        $.getJSON('http://anyorigin.com/go?url=https%3A//mbsy.co/hRP2L&callback=?', function(data){
+            $('#output').html(data.contents);
         });
     </script>
 </head>
