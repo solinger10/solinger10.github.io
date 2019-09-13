@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/running-coder/jquery-typeahead.svg?branch=develop&style=flat-square)](https://travis-ci.org/running-coder/jquery-typeahead)
-[![npm:](https://img.shields.io/npm/v/jquery-typeahead.svg?style=flat-square)](https://www.npmjs.com/packages/jquery-typeahead)
+[![npm:](https://img.shields.io/npm/v/jquery-typeahead.svg?style=flat-square)](https://www.npmjs.com/package/jquery-typeahead)
 [![license:mit](https://img.shields.io/badge/license-mit-green.svg?style=flat-square)](#license)
 [![Built with gulp](http://img.shields.io/badge/built%20with-gulp.js-red.svg?style=flat-square)](http://gulpjs.com/)
 
@@ -41,3 +41,5 @@ The `master` branch should be a copy of the latest released `tag` without any ad
 - Add a descriptive note along with the PR and examples
 - Only submit the changed lines and not the whole file(s)
 - Follow the same coding conversions
+
+Buy me a coffee with ETH: `0x38084cF7Ba4D84D8d9E5C185c66B4C234D8d4764`

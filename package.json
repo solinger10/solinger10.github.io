@@ -4,7 +4,8 @@
   "description": "When should I leave for the airport?",
   "scripts": {
     "start": "live-server --entry-file=404.html",
-    "test": "webpack -d --watch"
+    "test": "webpack -d --watch",
+    "build": "webpack -p"
   },
   "repository": {
     "type": "git",

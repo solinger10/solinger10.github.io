@@ -353,7 +353,7 @@ function Home() {
                 <hr />
                 <span className="label">To Airport</span>
                 <div className="form-group textola">
-                    <input id="airportInput" type="text" name="a"  onClick={(e)=>{e.target.setSelectionRange(0, 1000)}} className="form-control typeahead" placeholder="JFK - John F. Kennedy International, Jamaica, New York" autoComplete="off"></input>
+                    <input id="airportInput" type="text" name="a"  onClick={(e)=>{e.target.setSelectionRange(0, 1000)}} className="form-control typeahead" placeholder="Type 'New York', 'JFK', or 'Kennedy'" autoComplete="off"></input>
                 </div>
                 <hr />
                 <span className="label">Travel Mode</span>
