@@ -345,7 +345,7 @@ function Home() {
             <form className="airport-form">
                 <span className="label">Leaving From</span>
                 <div className="form-group textola side-button">
-                    <input id="startInput" type="text" name="s"  onClick={(e)=>{e.target.setSelectionRange(0, 1000)}} placeholder="123 wsilfta street, NY" className="form-control"></input>
+                    <input id="startInput" type="text" name="s"  onClick={(e)=>{e.target.setSelectionRange(0, 1000)}} placeholder="123 WSILFTA Street, New York" className="form-control"></input>
                     <span className="input-group-btn">
                         <button id="locationButton" className="btn btn-secondary" type="button"><span className="glyphicon glyphicon-map-marker"> </span></button>
                       </span>
