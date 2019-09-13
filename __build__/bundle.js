@@ -29724,7 +29724,7 @@
 	                    { className: 'form-group textola' },
 	                    _react2.default.createElement('input', { id: 'airportInput', type: 'text', name: 'a', onClick: function onClick(e) {
 	                            e.target.setSelectionRange(0, 1000);
-	                        }, className: 'form-control typeahead', placeholder: 'JFK - John F. Kennedy International, Jamaica, New York', autoComplete: 'off' })
+	                        }, className: 'form-control typeahead', placeholder: 'Type \'New York\', \'JFK\', or \'Kennedy\'', autoComplete: 'off' })
 	                ),
 	                _react2.default.createElement('hr', null),
 	                _react2.default.createElement(
