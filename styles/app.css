@@ -309,3 +309,6 @@ textarea {
 .side-button span button {
   background-color: #dddddd;
 }
+.filter-option {
+  min-width: fit-content;
+}
