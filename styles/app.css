@@ -70,14 +70,8 @@ a {
   touch-action: manipulation;
 }
 
-a:hover, a:active {
-}
-
 .current-input-touch a:hover {
   color: inherit;
-}
-
-.current-input-touch a:active {
 }
 
 /*extended link*/
@@ -89,9 +83,6 @@ a:hover, a:active {
 .current-input-touch .extended-link:active, .current-input-touch .extended-link:hover {
   border: none;
   color: inherit;
-}
-
-.extended-link > span {
 }
 
 .extended-link:hover > span, .extended-link:active > span {

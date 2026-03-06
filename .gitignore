@@ -1,7 +1,18 @@
-# Dependency directory
-# node_modules
-*.exe
+# Dependencies
+node_modules
 
+# Build artifacts
+__build__
+*.tgz
+
+# Debug logs
+npm-debug.log
+
+# Environment
+.env
+
+# Executables
+*.exe
 
 # Source maps
 *.js.map
@@ -9,4 +20,9 @@
 # Files marked with gitigx
 *gitigx*
 
+# IDE
 .idea
+
+# Playwright
+test-results/
+playwright-report/
