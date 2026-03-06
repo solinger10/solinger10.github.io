@@ -1,11 +1,49 @@
-https://github.com/rafrex/spa-github-pages
+# When Should I Leave For The Airport?
 
-#### Development environment
-I have included `webpack-dev-server` for testing changes locally. It can be accessed by running `$ npm start` (details below), or you can use your own dev setup by running `$ webpack` and serving the `index.html` file and the `404.html` file for 404s. Note that `webpack-dev-server` automatically creates a new bundle whenever the source files change and serves the bundle from memory, so you'll never see the bundle as a file saved to disk.
-- `$ npm start` runs the [start script][startScript] in `package.json`, which runs the command `$ webpack-dev-server --devtool eval-source-map --history-api-fallback --open`
-  - `-devtool eval-source-map` is for [generating source maps][webpackDevtool] in while in development
-  - `--history-api-fallback` allows for frontend routing and will serve `index.html` when the requested file can't be found
-  - `--open` will open automatically open the site in your browser
-- `webpack-dev-server` will serve `index.html` at `http://localhost:8080` (port `8080` is the default). Note that you must load the `index.html` from the server and not just open it directly in the browser or the scripts won't load.
+## Development
 
-whenshouldileavefortheairport 
+```sh
+# Install dependencies
+npm install
+
+# Start local dev server (serves existing bundle on port 8080)
+npm start
+
+# Watch and rebuild dev bundle while coding
+npm test
+```
+
+## Testing
+
+```sh
+npm run e2e
+```
+
+Tests use whatever bundle is already on disk — they do not rebuild it.
+
+## Deploying
+
+**Always build the production bundle before committing:**
+
+```sh
+npx webpack -p
+git add -f __build__/bundle.js
+git commit -m "..."
+git push
+```
+
+> **Warning:** Never commit `__build__/bundle.js` after running `npm run e2e` or `npx webpack -d`.
+> Those commands embed the **dev** API key. Only `npx webpack -p` embeds the production key.
+> You can verify the key with:
+> ```sh
+> grep -o 'AIzaSy[A-Za-z0-9_-]*' __build__/bundle.js | sort -u
+> # should output: AIzaSyC-g4IcHhhEy8_MZ8s0C5ksg2XI-iQ9ZXg
+> ```
+
+## Environment
+
+A `.env` file is required for local development (never committed):
+
+```
+GOOGLE_MAPS_KEY=<dev key>
+```
