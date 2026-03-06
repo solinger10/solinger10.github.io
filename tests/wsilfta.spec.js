@@ -61,13 +61,12 @@ test('form submission shows leave time and Google Maps link', async ({ page }) =
   await page.goto('/');
   await waitForApp(page);
 
-  // Mock the DistanceMatrixService prototype after Maps mock is loaded
+  // Mock without duration_in_traffic to simulate missing traffic data
   await page.evaluate(() => {
     google.maps.DistanceMatrixService.prototype.getDistanceMatrix = function(config, callback) {
       callback({
         rows: [{ elements: [{
           duration: { value: 1800, text: '30 mins' },
-          duration_in_traffic: { value: 2100, text: '35 mins' },
         }] }],
       }, 'OK');
     };
