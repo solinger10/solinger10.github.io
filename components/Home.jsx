@@ -195,7 +195,9 @@ function Home() {
 
             if (status == google.maps.DistanceMatrixStatus.OK) {
                 let isDriving = (transitMode + '' == "driving");
-                let durationObj = isDriving ? response.rows[0].elements[0].duration_in_traffic : response.rows[0].elements[0].duration;
+                let durationObj = isDriving
+                    ? (response.rows[0].elements[0].duration_in_traffic || response.rows[0].elements[0].duration)
+                    : response.rows[0].elements[0].duration;
                 let duration = durationObj.value * 1000;
                 if (round < 2 && isDriving) {
                     calculateDistances(timeToArrive, timeToArrive - duration, transitMode, round + 1, startLocation, airport)
