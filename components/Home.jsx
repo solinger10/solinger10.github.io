@@ -150,10 +150,10 @@ function Home() {
             let timeToLeave = dateFormat(leaveTime, "shortTime");
             let dayText = dateFormat(leaveTime, "isoDate") == dateFormat(new Date(), "isoDate") ? "today" : "on " + dateFormat(leaveTime, "dddd");
 
-            let arrivalDateStr = dateFormat(new Date(timeToArrive), "mm/dd/yyyy");
-            let arrivalTimeStr = dateFormat(new Date(timeToArrive), "HH:MM");
+            let departureDateStr = dateFormat(leaveTime, "mm/dd/yyyy");
+            let departureTimeStr = dateFormat(leaveTime, "HH:MM");
             let travelTypeFlag = isDriving ? 'd' : 'r';
-            let directionsUrl = "https://www.google.com/maps?saddr=" + encodeURIComponent(startLocation) + "&daddr=" + encodeURIComponent(airport) + "&dirflg=" + travelTypeFlag + "&ttype=arr&date=" + arrivalDateStr + "&time=" + arrivalTimeStr;
+            let directionsUrl = "https://www.google.com/maps?saddr=" + encodeURIComponent(startLocation) + "&daddr=" + encodeURIComponent(airport) + "&dirflg=" + travelTypeFlag + "&ttype=dep&date=" + departureDateStr + "&time=" + departureTimeStr;
 
             let $result = $('#result').empty();
             $('<span>').text("You should leave by").appendTo($result);
