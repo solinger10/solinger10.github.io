@@ -281,14 +281,15 @@ function Home() {
             let tomorrow = new Date(now.valueOf());
             tomorrow.setDate(tomorrow.getDate()+1);
             const dateStr = dateFormat(tomorrow, "isoDate") + " 18:30";
-            $('#datetimepicker12').datetimepicker({
+            flatpickr('#datetimepicker12', {
                 inline: true,
-                sideBySide: true,
-                minDate: "now",
+                enableTime: true,
+                minuteIncrement: 5,
+                minDate: 'today',
                 defaultDate: dateStr,
-                stepping: 5
-            }).on('dp.change', function(e) {
-                $('#dateval').val(e.date);
+                onChange: function(selectedDates) {
+                    $('#dateval').val(selectedDates[0]);
+                }
             });
             $('#dateval').val(new Date(dateStr));
         });
