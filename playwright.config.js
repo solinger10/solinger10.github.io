@@ -11,7 +11,7 @@ module.exports = defineConfig({
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
   ],
   webServer: {
-    command: 'npx webpack -d && npx live-server --entry-file=404.html --port=8080 --no-browser',
+    command: 'npx live-server --entry-file=404.html --port=8080 --no-browser',
     port: 8080,
     reuseExistingServer: !process.env.CI,
     timeout: 60000,
